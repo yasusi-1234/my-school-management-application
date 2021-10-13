@@ -1,0 +1,93 @@
+@import './grobal-color';
+@import './grobal';
+
+.header{
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: $header-background;
+    padding: 5px;
+
+    &-nav{
+        display: flex;
+    }
+
+    & .drop-down{
+        margin-left: 30px;
+        position: relative;
+        height: 25px;
+
+        &-title{
+            color: black;
+            font-weight: bold;
+        }
+
+        &:hover{
+            & .drop-down-level{
+                transition: all .3s ease;
+                visibility: visible;
+                opacity: 1;
+               
+            }
+        }
+
+    }
+    & .drop-down-level{
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        width: 150%;
+        padding: 0;
+        margin: 0;
+        left: -15px;
+        background-color: rgb(189, 189, 189);
+        border-top: 3px solid black;
+        box-shadow: 3px 3px 3px black;
+        padding: 10px;
+        font-weight: bold;
+        & li{
+            list-style: none;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        &-link{
+            color: black;
+            padding: 4px;
+            // transition: all .1s .1s ease;
+            &:hover{
+                text-decoration: none;
+                background-color:azure ;
+            }
+        }
+    }
+
+    &-sub{
+        position: absolute;
+        right: 30px;
+
+        &-link{
+            font-size: 20px;
+            font-weight: bold;
+            color: #031abdc4;
+        }
+    }
+
+    &-bottom{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & .page-title{
+            margin: 15px 0 5px 15px;
+        }
+    }
+}
+
+.title{
+    color: #99469eed;
+    margin: 6px 15px;
+}
+
+.username{
+    margin: 5px 15px;
+}

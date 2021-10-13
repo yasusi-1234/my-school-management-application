@@ -1,0 +1,50 @@
+.btn{
+    border: none;
+    outline: none;
+    appearance: none;
+    font-weight: 600;
+    color: teal;
+    background-color: aquamarine;
+    padding: 8px 50px;
+    margin: 10px;
+    border: 1px solid teal;
+    border-radius: 10px;
+    transition: all 0.2s 0.2s ease;
+
+    &_return{
+        color: gray;
+        background-color: lightgray;
+        border: 1px solid gray;
+    }
+
+    &-login{
+        color: gray;
+        background-color: lightgray;
+        border-color: gray;
+    }
+
+    &:hover{
+        opacity: 0.8;
+    }
+
+}
+
+.btn-square{
+    border: none;
+    outline: none;
+    appearance: none;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    padding: 8px 50px;
+    margin: 10px;
+    border: 2px solid black;
+    transition: all 0.3s 0.2s ease;
+
+    &:hover{
+        // box-shadow: 5px 5px 5px black;
+        color: white;
+    background-color: black;
+    border: 2px solid white;
+    }
+}

@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.example.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
+	// security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi
+	implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// swagger
+	implementation 'io.springfox:springfox-swagger2:2.6.0'
+	implementation 'io.springfox:springfox-swagger-ui:2.6.0'
+	testImplementation 'io.springfox:springfox-staticdocs:2.6.0'
+	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper モデルマッパー
+	// implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
+	// aop
+	implementation 'org.springframework:spring-aop'
+	implementation 'org.aspectj:aspectjweaver'
+	// sql
+	runtimeOnly 'mysql:mysql-connector-java'
+	//runtimeOnly 'org.postgresql:postgresql'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+	useJUnitPlatform()
+}

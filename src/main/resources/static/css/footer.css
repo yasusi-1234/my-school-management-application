@@ -1,0 +1,29 @@
+.footer-link {
+  margin: 15px;
+}
+
+.footer-link a {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.footer-link .btn-logout {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: black;
+  background-color: #b4bede;
+  -webkit-transition: all .2s .2s ease;
+  transition: all .2s .2s ease;
+}
+
+.footer-link .btn-logout:hover {
+  -webkit-box-shadow: 3px 3px 3px black;
+          box-shadow: 3px 3px 3px black;
+}
+/*# sourceMappingURL=footer.css.map */

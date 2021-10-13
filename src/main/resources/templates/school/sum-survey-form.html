@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../../static/css/bootstrap-reboot.min.css" th:href="@{/css/bootstrap-reboot.min.css}">
+	<link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+	<link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" href="../../static/css/survey-form.css" th:href="@{/css/survey-form.css}">
+	<link rel="stylesheet" href="../../static/css/sum-survey-form.css" th:href="@{/css/sum-survey-form.css}">
+
+	<script src="#" th:src="@{/js/Chart.js}"></script>
+	<script src="#" th:src="@{/js/Chart.bundle.js}"></script>
+	<script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+
+	<title>合計成績調査</title>
+</head>
+
+<body>
+	<th:block th:replace="fragments/header :: pageHeader"></th:block>
+	<div class="form square">
+		<form action="#" th:action="@{/school/sum/survey-form}" method="get" th:object="${sumSurveyForm}" id="form">
+
+			<div class="form-title">検索フォーム</div>
+			<p class="form-subtitle">検索オプション</p>
+
+			<div class="form-item">
+				<label class="form-label" for="year">年度</label>
+				<input class="form-input" type="radio" th:each="item : ${year}" th:text="${item}" th:value="${item}"
+					th:field="*{year}" name="year" id="year" />
+			</div>
+			<div th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+			<div class="form-item">
+				<label class="form-label" for="grade">学年</label>
+				<input class="form-input" type="radio" th:each="item : ${grade}" th:value="${item.name()}"
+					th:text="${item.grade}" th:field="*{grade}" name="grade" id="grade" />
+			</div>
+			<div th:if="${#fields.hasErrors('grade')}" th:errors="*{grade}"></div>
+
+			<div class="form-item">
+				<label class="form-label" for="class">クラス</label>
+				<input class="form-input" type="radio" th:each="item : ${clazz}" th:value="${item.name()}"
+					th:text="${item.clazzName}" th:field="*{clazz}" name="clazz" id="class" />
+			</div>
+			<div th:if="${#fields.hasErrors('clazz')}" th:errors="*{clazz}"></div>
+
+			<div class="form-item">
+				<label class="form-label" for="season">時期</label>
+				<input class="form-input" type="radio" th:each="item : ${season}" th:value="${item.name()}"
+					th:text="${item.seasonName}" th:field="*{season}" name="season" id="season" />
+			</div>
+			<div th:if="${#fields.hasErrors('season')}" th:errors="*{season}"></div>
+			<p class="form-subtitle">ソートオプション</p>
+			
+			
+			<div class="form-item">
+				<label class="form-label" for="sort">並び順</label>
+				<input class="form-input" type="radio" th:each="item : ${sort}" th:value="${item.name()}"
+					th:text="${item.textVal}" th:field="*{sort}" name="sort" id="sort"/>
+			</div>
+			<div th:if="${#fields.hasErrors('sort')}" th:errors="*{sort}"></div>
+			 
+			
+			<div class="form-item">
+				<label class="form-label" for="display">表示数</label>
+				<input class="form-input" type="radio" th:each="item : ${display}" th:value="${item.name()}"
+					th:text="${item.displayCount}" th:field="*{display}" name="display" id="display" />
+			</div>
+			<div th:if="${#fields.hasErrors('display')}" th:errors="*{display}"></div>
+
+			<div class="form-btn">
+				<button type="submit" class="btn-square" id="submit">調査</button>
+			</div>
+			<div class="form-btn">
+				<button type="submit" class="btn-square" name="download" id="output">Excel出力</button>
+			</div>
+		</form>
+	</div>
+	<hr />
+
+	<!--  	
+    	<div style="width:300px; height=300px;">
+    	<canvas id="radar-graph" width="300px" height="300px"></canvas>    	
+    	</div>
+    	
+    	<div style="width:300px; height=300px;">
+    	<canvas id="bar-graph" width="300px" height="300px"></canvas>    	
+    	</div>
+    	  -->
+
+		  <p class="not-found" th:if="${sumTestList} == null" th:text="|※未検索状態です※|">※未検索状態です※</p>
+		  <p class="not-found" th:if="${sumTestList} != null and ${sumTestList.isEmpty()}" th:text="|※検索結果が有りません※|">※検索結果が有りません※
+		  </p>
+	
+	<div class="table-area">
+		<div class="table">
+			<h3 class="table-title" th:text="${tableTitle2}">TEXT</h3>
+			<table th:if="${sumTestList} != null and ${!sumTestList.isEmpty()}">
+				<tbody class="table-body">
+					<tr class="table-tr">
+						<th class="table-head">No</th>
+						<th class="table-head">氏名</th>
+						<th class="table-head">クラス</th>
+						<th class="table-head">合計点</th>
+					</tr>
+					<tr class="table-tr" th:each="item , stat: ${sumTestList}">
+						<td class="table-data" th:text="${stat.count}">No</td>
+						<td class="table-data" th:text="|${item.lastName} ${item.firstName}|">氏名</td>
+						<td class="table-data" th:text="${item.clazzName}">クラス</td>
+						<td class="table-data" th:text="${item.sumPoint}">合計点</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="table">
+			<h3 class="table-title" th:text="${tableTitle}">TEXT</h3>
+			<table th:if="${testResult} != null">
+				<tbody class="table-body">
+					<tr class="table-tr">
+						<th class="table-head">最高点</th>
+						<th class="table-head">最低点</th>
+						<th class="table-head">平均点</th>
+					</tr>
+					<tr class="table-tr" >
+						<td class="table-data" th:text="${testResult.maxPoint}">No</td>
+						<td class="table-data" th:text="${testResult.minPoint}">氏名</td>
+						<td class="table-data" th:text="${testResult.avgPoint}">クラス</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<hr>
+	 <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+	
+   <script th:src="@{/js/graphFormConfig1.js}"></script>
+   <script th:src="@{/js/create-graph1.js}"></script>
+   <script th:src="@{/js/create-graph.js}"></script>
+    
+	<script src="../../static/js/btn-barrier.js" th:src="@{/js/btn-barrier.js}"></script>
+</body>
+
+</html>

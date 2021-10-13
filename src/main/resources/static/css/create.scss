@@ -1,0 +1,50 @@
+@import './form';
+@import './btn';
+@import './grobal';
+@import './grobal-background';
+
+.form{
+    &-info{
+        color: blue;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    &-danger{
+        color: crimson;
+        text-align: center;
+    }
+
+    &.square{
+        & .form-title{
+            margin-bottom: 0;
+        }
+
+        & .form-item{
+            margin-bottom: 7px;
+        }
+
+        & .form-label{
+            margin-bottom: 0;
+        }
+
+        & .error{
+            text-align: left;
+            margin-left: 15px;
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.register{
+    text-align: center;
+    margin-top: 20px;
+    &-text{
+        display: inline-block;
+        border: 5px double teal;
+        color: teal;
+        font-weight: bold;
+        font-size: 30px;
+        padding: 3px 35px;
+    }
+}

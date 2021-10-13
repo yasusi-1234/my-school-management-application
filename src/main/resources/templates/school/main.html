@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../../static/css/bootstrap-reboot.min.css" th:href="@{/css/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}">
+
+    <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <title>School Main</title>
+</head>
+
+<body>
+    
+    <th:block th:replace="fragments/header :: pageHeader"></th:block>
+
+    <div sec:authentication="principal.authorities"></div>
+    <div th:text="${principal}"></div>
+
+    <main class="main ma-15">
+        <div class="link-area" sec:authorize="hasRole('TEACHER')">
+            <h3 class="link-area-title">登録処理</h3>
+            <div class="link-area-item">
+                <p class="item-title">※試験データの登録を行います</p>
+                <a href="#" th:href="@{/school/registation}" sec:authorize="hasRole('TEACHER')">データ登録</a>
+            </div>
+            <div class="link-area-item">
+                <p class="item-title">※新たに試験情報を作成します</p>
+                <a href="#" th:href="@{/school/test/registation}" sec:authorize="hasRole('TEACHER')">試験作成</a>
+            </div>
+            <div class="link-area-item">
+                <p class="item-title">※学年・クラス情報を新たに登録します</p>
+                <a href="#" th:href="@{/school/grade-class/registation}"
+                    sec:authorize="hasRole('TEACHER')">学年・クラス情報作成</a>
+            </div>
+        </div>
+        <div class="link-area" sec:authorize="hasRole('TEACHER')">
+            <h3 class="link-area-title">ダウンロード</h3>
+            <div class="link-area-item">
+                <p class="item-title">※データ登録用試験テンプレートをダウンロードします</p>
+                <a href="#" th:href="@{/school/test-template/download}"
+                    sec:authorize="hasRole('TEACHER')">テスト用テンプレートダウンロード</a>
+            </div>
+            <div class="link-area-item">
+                <p class="item-title">※学生登録用試験テンプレートをダウンロードします</p>
+                <a href="#" th:href="@{/school/student-template/download}"
+                    sec:authorize="hasRole('TEACHER')">学生用テンプレートダウンロード</a>
+            </div>
+        </div>
+        <div class="link-area" sec:authorize="hasRole('TEACHER')">
+            <h3 class="link-area-title">試験調査</h3>
+            <div class="link-area-item">
+                <p class="item-title">※試験結果をクラスごと・学年ごとに調査を行います</p>
+                <a href="#" th:href="@{/school/survey-form}" sec:authorize="hasRole('TEACHER')">成績調査</a>
+            </div>
+            <div class="link-area-item">
+                <p class="item-title">※試験結果の個人の合計点をクラスごと学年ごとに調査します</p>
+                <a href="#" th:href="@{/school/sum/survey-form}" sec:authorize="hasRole('TEACHER')">成績調査２</a>
+            </div>
+        </div>
+        <div class="link-area" sec:authorize="hasRole('TEACHER')">
+            <h3 class="link-area-title">学生検索</h3>
+            <div class="link-area-item">
+                <p class="item-title">※学生の情報を検索します</p>
+                <a href="#" th:href="@{/school/search-student}" sec:authorize="hasRole('TEACHER')">学生検索</a>
+            </div>
+        </div>
+        <div class="link-area">
+            <h3 class="link-area-title">個人用</h3>
+            <div class="link-area-item" sec:authorize="hasRole('STUDENT')">
+                <p class="item-title">※自分の成績を確認します</p>
+                <a href="#" th:href="@{/school/student/survey-form}">自分の成績を確認</a>
+            </div>
+            <div class="link-area-item">
+                <p class="item-title">※パスワード・ユーザー名を変更します</p>
+                <a href="#" th:href="@{/school/password-change}">変更ページへ</a>
+            </div>
+        </div>
+    </main>
+    <hr>
+    <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+    <script src="../../static/js/btn-barrier.js" th:src="@{/js/btn-barrier.js}"></script>
+</body>
+
+</html>

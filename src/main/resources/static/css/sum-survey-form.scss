@@ -1,0 +1,10 @@
+@import './grobal';
+
+.table-area{
+    display: flex;
+    justify-content: space-around;
+
+    & .table-title{
+        text-align: center;
+    }
+}

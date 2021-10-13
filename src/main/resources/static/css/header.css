@@ -1,0 +1,189 @@
+.ma-t-10 {
+  margin-top: 10px;
+}
+
+.ma-t-20 {
+  margin-top: 20px;
+}
+
+.ma-t-35 {
+  margin-top: 35px;
+}
+
+.ma-b-10 {
+  margin-bottom: 10px;
+}
+
+.ma-r-10 {
+  margin-right: 10px;
+}
+
+.ma-l-10 {
+  margin-left: 10px;
+}
+
+.ma-15 {
+  margin: 15px;
+}
+
+.ma-10 {
+  margin: 10px;
+}
+
+.pa-t-10 {
+  padding-top: 10px;
+}
+
+.pa-b-10 {
+  padding-bottom: 10px;
+}
+
+.pa-r-10 {
+  padding-right: 10px;
+}
+
+.pa-l-10 {
+  padding-left: 10px;
+}
+
+.pa-t-15 {
+  padding-top: 15px;
+}
+
+.pa-b-15 {
+  padding-bottom: 15px;
+}
+
+.pa-r-15 {
+  padding-right: 15px;
+}
+
+.pa-l-15 {
+  padding-left: 15px;
+}
+
+.pa-tb-15 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.pa-15 {
+  padding: 15px;
+}
+
+.width-33 {
+  width: 33%;
+}
+
+.error {
+  color: #da6363;
+}
+
+.btn-barrier {
+  pointer-events: none;
+}
+
+.header {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #9e9e9ecc;
+  padding: 5px;
+}
+
+.header-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header .drop-down {
+  margin-left: 30px;
+  position: relative;
+  height: 25px;
+}
+
+.header .drop-down-title {
+  color: black;
+  font-weight: bold;
+}
+
+.header .drop-down:hover .drop-down-level {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  visibility: visible;
+  opacity: 1;
+}
+
+.header .drop-down-level {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  width: 150%;
+  padding: 0;
+  margin: 0;
+  left: -15px;
+  background-color: #bdbdbd;
+  border-top: 3px solid black;
+  -webkit-box-shadow: 3px 3px 3px black;
+          box-shadow: 3px 3px 3px black;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.header .drop-down-level li {
+  list-style: none;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.header .drop-down-level-link {
+  color: black;
+  padding: 4px;
+}
+
+.header .drop-down-level-link:hover {
+  text-decoration: none;
+  background-color: azure;
+}
+
+.header-sub {
+  position: absolute;
+  right: 30px;
+}
+
+.header-sub-link {
+  font-size: 20px;
+  font-weight: bold;
+  color: #031abdc4;
+}
+
+.header-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header-bottom .page-title {
+  margin: 15px 0 5px 15px;
+}
+
+.title {
+  color: #99469eed;
+  margin: 6px 15px;
+}
+
+.username {
+  margin: 5px 15px;
+}
+/*# sourceMappingURL=header.css.map */

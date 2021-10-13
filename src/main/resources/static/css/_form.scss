@@ -1,0 +1,80 @@
+.form{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    & form{
+        width: 33%;
+        border: solid 2px black ;
+        border-radius: 10px;
+    }
+
+    & .error{
+        text-align: center;
+    }
+
+    &-title{
+        text-align: center;
+        font-weight: bold;
+        font-size: 23px;
+    }
+
+    &-item{
+        text-align: center;
+    }
+
+    &-btn{
+        text-align: center;
+    }
+
+    &-label{
+        font-weight: 600;
+    }
+
+    &-text{
+        border-radius: 8px;
+        // box-shadow: 10px 10px 10px rgba(0,0,0,0.4);
+        &:focus{
+            outline: none;
+            border:solid 2px orange;
+            // box-shadow: 10px 10px 10px rgba(0,0,0,0.4);
+        }
+    }
+
+    &.square{
+        & form {
+            width: 50%;
+            border-radius: 0;
+        }
+    
+        & .form-title {
+            margin: 15px;
+            font-size: 35px;
+        }
+    
+        & .form-item {
+            margin: 0 0 15px 15px;
+        }
+    
+        & .form-item {
+            text-align: left;
+    
+            & input {
+                margin-left: 8px;
+            }
+        }
+    
+        & .form-subtitle {
+            margin-left: 15px;
+            font-weight: bold;
+            font-size: 22px;
+            color: blue;
+        }
+    }
+}
+
+.form-title-sub{
+    font-weight: bold;
+    font-size: 25px;
+    margin: 20px;
+    text-align: center;
+}

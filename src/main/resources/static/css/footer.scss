@@ -1,0 +1,25 @@
+.footer {
+    &-link {
+        margin: 15px;
+
+        & a {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        & .btn-logout {
+            border: none;
+            outline: none;
+            appearance: none;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 5px;
+            color: black;
+            background-color: #b4bede;
+            transition: all .2s .2s ease;
+            &:hover{
+                box-shadow: 3px 3px 3px black;
+            }
+        }
+    }
+}

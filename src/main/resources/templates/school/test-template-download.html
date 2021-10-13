@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../../static/css/bootstrap-reboot.min.css" th:href="@{/css/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../../static/css/create.css" th:href="@{/css/create.css}">
+
+    <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <title>School Data Registation</title>
+</head>
+
+<body>
+    <th:block th:replace="fragments/header :: pageHeader"></th:block>
+    <div class="form square">
+        <form action="#" th:action="@{/school/test-template/download}" th:object="${createExcelTemplateForm}" method="post">
+            <div class="form-title">ダウンロードフォーム</div>
+            <p class="form-info">選択された情報を元に、Excelテンプレートを作成します</p>
+            
+            <div class="form-item">
+                <label class="form-label ma-t-10" for="grade">学年：</label>
+                <input class="form-input" type="radio" th:each="item : ${grade}" th:text="${item.grade}" th:value="${item.name()}"
+                    th:field="*{grade}" id="grade"/>
+            </div>
+            <div th:if="${#fields.hasErrors('grade')}" th:errors="*{grade}" class="error"></div>
+            <div class="form-item">
+                <label class="form-label ma-t-10" for="class">クラス：</label>
+                <input class="form-input" type="radio" th:each="item : ${clazz}" th:text="${item.clazzName}" th:value="${item.name()}"
+                    th:field="*{clazz}" id="class" />
+            </div>
+            <div class="error" th:if="${#fields.hasErrors('clazz')}" th:errors="*{clazz}"></div>
+            <div class="form-item">
+                <label class="form-label ma-t-10" for="subject">教科：</label>
+                <input class="form-input" type="radio" th:each="item : ${subject}" th:text="${item.subjectName}" th:value="${item.name()}"
+                    th:field="*{subject}" id="subject" />
+            </div>
+            <div class="error" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div>
+            <div class="form-item">
+                <label class="form-label ma-t-10" for="season">時期：</label>
+                <input class="form-input" type="radio" th:each="item : ${season}" th:text="${item.seasonName}" th:value="${item.name()}"
+                    th:field="*{season}" id="season" />
+            </div>
+            <div class="error" th:if="${#fields.hasErrors('season')}" th:errors="*{season}"></div>
+            <div class="form-item">
+                <label class="form-label ma-t-10" for="year">年度：</label>
+                <input class="form-input" type="radio" th:each="item : ${year}" th:text="${item}" th:value="${item}" th:field="*{year}" id="year" />
+                <div class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+            </div>
+
+            <div class="form-btn">
+				<button type="submit" class="btn-square" id="output">ダウンロード</button>
+			</div>
+        </form>
+    </div>
+    <hr />
+    <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+    <script src="../../static/js/btn-barrier.js" th:src="@{/js/btn-barrier.js}"></script>
+</body>
+
+</html>
