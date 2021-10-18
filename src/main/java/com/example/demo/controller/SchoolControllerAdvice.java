@@ -30,7 +30,7 @@ public class SchoolControllerAdvice {
 	}
 
 	@ExceptionHandler
-	public String arlreadyRegisterDataExceptionHandler(AlreadyRegisterDataException ex, Model model) {
+	public String alreadyRegisterDataExceptionHandler(AlreadyRegisterDataException ex, Model model) {
 		model.addAttribute("status", HttpStatus.BAD_REQUEST);
 		model.addAttribute("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
 		model.addAttribute("timestamp", LocalDateTime.now().withNano(0));
@@ -82,7 +82,8 @@ public class SchoolControllerAdvice {
 		model.addAttribute("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
 		model.addAttribute("timestamp", LocalDateTime.now().withNano(0));
 		model.addAttribute("message", ex.getMessage());
-		return "/error/400";
+		model.addAttribute("notExistMap", ex.getConvertNotExistMap());
+		return "/error/excel-error";
 	}
 
 	@ExceptionHandler
