@@ -103,7 +103,7 @@ public final class UserTestHelper {
 	 * @param grades
 	 * @return
 	 */
-	public static Specification<UserTest> inGrade(List<Byte> grades) {
+	public static Specification<UserTest> inGrade(List<Integer> grades) {
 		return CollectionUtils.isEmpty(grades) ? null : (root, query, cb) -> root.get(TEST).get(GRADE).in(grades);
 	}
 
@@ -113,8 +113,8 @@ public final class UserTestHelper {
 	 * @param grade
 	 * @return
 	 */
-	public static Specification<UserTest> equalGrade(byte grade) {
-		return (root, query, cb) -> root.get(TEST).get(GRADE).in(grade);
+	public static Specification<UserTest> equalGrade(Integer grade) {
+		return grade == null ? null : (root, query, cb) -> root.get(TEST).get(GRADE).in(grade);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public final class UserTestHelper {
 	 * @return
 	 */
 	public static Specification<UserTest> equalGrade(Grade grade) {
-		return grade == null ? null : equalGrade((byte) grade.getGrade());
+		return grade == null ? null : equalGrade(grade.getGrade());
 	}
 
 	/**
