@@ -2,6 +2,7 @@ package com.example.demo.domain.excel.exception;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RequiredBodyValueNotExistException extends RuntimeException {
 
@@ -19,6 +20,13 @@ public class RequiredBodyValueNotExistException extends RuntimeException {
 
 	public Map<Integer, List<String>> getNotExistMap() {
 		return this.notExistMap;
+	}
+
+	public Map<Integer, String> getConvertNotExistMap(){
+		return this.notExistMap.entrySet()
+				.stream().collect(Collectors.toMap(
+						Map.Entry::getKey,
+						item -> String.join(",", item.getValue())));
 	}
 
 }
