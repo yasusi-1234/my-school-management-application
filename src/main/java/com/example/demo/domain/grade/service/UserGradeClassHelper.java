@@ -98,14 +98,24 @@ public final class UserGradeClassHelper {
 	}
 
 	/**
-	 * 学年情報の一致するものを抽出
+	 * 学年情報と一致するものを抽出
 	 * 
 	 * @param grade
 	 * @return
 	 */
 	public static Specification<UserGradeClass> equalGrade(Grade grade) {
 		return grade == null ? null
-				: (root, query, cb) -> cb.equal(root.get(GRADECLASS).get(GRADE), (byte) grade.getGrade());
+				: (root, query, cb) -> cb.equal(root.get(GRADECLASS).get(GRADE), grade.getGrade());
+	}
+
+	/**
+	 * 学年情報と一致するものを抽出
+	 *
+	 * @param grade
+	 * @return
+	 */
+	public static Specification<UserGradeClass> equalGrade(Integer grade) {
+		return grade == null ? null : (root, query, cb) -> cb.equal(root.get(GRADECLASS).get(GRADE), grade);
 	}
 
 	/**
@@ -117,7 +127,7 @@ public final class UserGradeClassHelper {
 	public static Specification<UserGradeClass> equalClass(Clazz clazz) {
 		return clazz == null ? null : (root, query, cb) -> {
 			if (clazz == Clazz.ALL) {
-				List<String> classes = clazz.valuesExcludeAll().stream().map(c -> c.name())
+				List<String> classes = clazz.valuesExcludeAll().stream().map(Enum::name)
 						.collect(Collectors.toList());
 				return root.get(GRADECLASS).get(CLASSNAME).in(classes);
 			}
