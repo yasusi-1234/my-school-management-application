@@ -4,7 +4,7 @@ public interface UserGradeClassView {
 
 	Integer getYear();
 
-	Byte getGrade();
+	Integer getGrade();
 
 	String getClazzName();
 }
