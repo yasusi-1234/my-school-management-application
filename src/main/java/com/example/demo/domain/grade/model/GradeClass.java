@@ -19,9 +19,24 @@ public class GradeClass implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long gradeId;
 	@Column(nullable = false)
-	private byte grade;
+	private int grade;
 	@Column(nullable = false, length = 1)
 	private String className;
 	@Column(nullable = false)
 	private int year;
+
+	/**
+	 * gradeId無しの学年・クラス名・年度を持ったGradeオブジェクトを生成するメソッド
+	 * @param grade 学年
+	 * @param className クラス名
+	 * @param year 年度
+	 * @return gradeId無しのGradeClassオブジェクト
+	 */
+	public static GradeClass of(int grade, String className, int year){
+		GradeClass gradeClass = new GradeClass();
+		gradeClass.setGrade(grade);
+		gradeClass.setClassName(className);
+		gradeClass.setYear(year);
+		return gradeClass;
+	}
 }
