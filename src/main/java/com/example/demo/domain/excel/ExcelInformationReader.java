@@ -114,15 +114,7 @@ public class ExcelInformationReader {
 
 			// 値が存在しないセルがあった場合は、その情報を元に例外を投げる
 			if (!notExistMap.isEmpty()) {
-				StringBuilder sb = new StringBuilder("値が挿入されていないセルが存在します。").append(BR);
-				notExistMap.entrySet().stream().forEach(entry -> {
-					sb.append("行番号: ");
-					sb.append(entry.getValue());
-					sb.append(" 列名: ");
-					sb.append(entry.getValue().stream().collect(Collectors.joining(",")));
-					sb.append(BR);
-				});
-				throw new RequiredBodyValueNotExistException(sb.toString(), notExistMap);
+				throw new RequiredBodyValueNotExistException("値が挿入されていないセルが存在します。", notExistMap);
 			}
 
 			// 得点に異常のあるセルが存在した場合は、その情報を元に例外を投げる
@@ -153,8 +145,8 @@ public class ExcelInformationReader {
 	/**
 	 * 取得したExcelのセル情報から値を取得し、String値に変換して返却する
 	 * 
-	 * @param cell
-	 * @return
+	 * @param cell セル情報
+	 * @return セル情報から得た内容からString値にparseした値
 	 */
 	private static String getConversionCellValue(Cell cell) {
 		if (cell == null) {
@@ -171,11 +163,9 @@ public class ExcelInformationReader {
 		case FORMULA:
 			return cell.getCellFormula();
 		case BLANK:
-			return "";
-		case _NONE:
-			return "";
-		case ERROR:
-			return "";
+			case _NONE:
+			case ERROR:
+				return "";
 		}
 		return "";
 	}
@@ -185,8 +175,8 @@ public class ExcelInformationReader {
 	 * Excelの行に書き込みを行いそのあとその行をクリアした場合でも、存在する行としてカウントしてしまう
 	 * バグの原因となってしまうので、実際に書き込みのある行を調べた上で返却を行うためのメソッド
 	 * 
-	 * @param sheet
-	 * @return
+	 * @param sheet シート情報
+	 * @return Excelに挿入されている情報がある最終行の位置
 	 */
 	private int rowExistPosition(Sheet sheet) {
 		// poiにより算出された最終行
@@ -234,20 +224,21 @@ public class ExcelInformationReader {
 	/**
 	 * ヘッダーマップ(value)の値に-1が入っているものが無いかチェックして、格納されていた場合は例外を投げるメソッド
 	 * 
-	 * @param checkMap
+	 * @param checkMap チェックするMap情報
+	 * @throws RequiredHeaderValueNotExistException チェック用のマップに必要な情報が無かった場合に投げられる
 	 */
 	private void checkHeader(Map<String, Integer> checkMap) {
 		List<String> requiredHeaderList = checkMap.entrySet().stream().filter(entry -> entry.getValue() == -1)
-				.map(entry -> entry.getKey()).collect(Collectors.toList());
+				.map(Entry::getKey).collect(Collectors.toList());
 		// 値が存在しない物があった場合には例外を投げる
 		if (!requiredHeaderList.isEmpty()) {
 			StringBuilder sb = new StringBuilder("必要なヘッダーがみつかりません。見つからなかったヘッダー値: ");
-			sb.append(requiredHeaderList.stream().collect(Collectors.joining("【", ",", "】")));
+			sb.append(requiredHeaderList.stream().collect(Collectors.joining(", ", "【", "】")));
 			throw new RequiredHeaderValueNotExistException(sb.toString(), requiredHeaderList);
 		}
 	}
 
-//	 implements Opelation
+//	 implements Operation
 	public enum NecessaryInformation {
 		STUDENT_UPDATE {
 			@Override
@@ -321,19 +312,18 @@ public class ExcelInformationReader {
 //		public abstract Map<String, Boolean> getCheckHeaderMap();
 
 		public List<Map<String, String>> returnModelMap() {
-			List<Map<String, String>> modelMap = new ArrayList<Map<String, String>>();
-			return modelMap;
+			return new ArrayList<Map<String, String>>();
 		}
 
 	}
 
 	/**
 	 * registrationData(学生情報かテスト情報か)の情報とdbinjectType(新規挿入・更新)情報を元に
-	 * 適合したNecessaryInfofmationの種類を返却する
+	 * 適合したNecessaryInformationの種類を返却する
 	 * 
-	 * @param data
-	 * @param type
-	 * @return
+	 * @param registrationData 学生データか学生の試験データかのEnum値
+	 * @param type 新規挿入か更新かのEnum値
+	 * @return Enum情報から得た新たなEnum値(必要なMap情報を取得する為の)
 	 */
 	public NecessaryInformation getNecessaryInformation(RegistrationData registrationData, DBInjectType type) {
 		if (registrationData == RegistrationData.DATA_STUDENT) {
