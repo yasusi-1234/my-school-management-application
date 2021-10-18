@@ -18,7 +18,7 @@ public class SchoolDataForm implements Serializable {
 	@UploadFile
 	private MultipartFile multipartFile;
 	@NoNull
-	private RegistrationData registationData;
+	private RegistrationData registrationData;
 	@NoNull
 	private DBInjectType dbInjectType;
 
