@@ -5,9 +5,9 @@
             <div class="drop-down ma-l-10">
                 <a href="#" class="drop-down-title"　 sec:authorize="hasRole('TEACHER')">データ登録</a>
                 <ul class="drop-down-level">
-                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/registation}" sec:authorize="hasRole('TEACHER')">データ登録</a></li>
-                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/test/registation}" sec:authorize="hasRole('TEACHER')">試験作成</a></li>
-                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/grade-class/registation}"
+                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/registration}" sec:authorize="hasRole('TEACHER')">データ登録</a></li>
+                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/test/registration}" sec:authorize="hasRole('TEACHER')">試験作成</a></li>
+                    <li><a class="drop-down-level-link" href="#" th:href="@{/school/grade-class/registration}"
                     sec:authorize="hasRole('TEACHER')">学年・クラス情報作成</a></li>
                 </ul>
             </div>

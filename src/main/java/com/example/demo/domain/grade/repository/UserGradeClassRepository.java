@@ -32,5 +32,5 @@ public interface UserGradeClassRepository
 	@Query("SELECT gc.year AS year, gc.className AS clazzName, gc.grade AS grade FROM UserGradeClass ugc "
 			+ "INNER JOIN GradeClass gc ON ugc.gradeClass = gc.gradeId "
 			+ "INNER JOIN AppUser au ON ugc.appUser = au.userId " + "WHERE au.userId =:userId AND gc.grade =:grade")
-	UserGradeClassView findUserGradeClassView(@Param("userId") Long userId, @Param("grade") Byte grade);
+	UserGradeClassView findUserGradeClassView(@Param("userId") Long userId, @Param("grade") Integer grade);
 }

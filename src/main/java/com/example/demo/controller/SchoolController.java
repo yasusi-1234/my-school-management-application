@@ -96,8 +96,6 @@ public class SchoolController {
 
 	/**
 	 * 現在の年から2年前・2年後の5年分の年代をInteger形式のリストで返却する
-	 * 
-	 * @return
 	 */
 	@ModelAttribute("year")
 	public List<Integer> years() {
@@ -127,10 +125,6 @@ public class SchoolController {
 	@GetMapping("main")
 	public String getMain(@AuthenticationPrincipal UserDetails user, Model model) {
 		model.addAttribute("pageTitle", "メインページ");
-//		System.out.println(user.getAuthorities());
-//		System.out.println(user.getUsername());
-//		System.out.println(user.getPassword());
-//		System.out.println("main:" + model);
 		return "school/main";
 	}
 
@@ -138,50 +132,61 @@ public class SchoolController {
 	 * データの登録ページ
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@GetMapping("registation")
-	public String getRegistation(@AuthenticationPrincipal UserDetails user,
+	@GetMapping("registration")
+	public String getRegistration(@AuthenticationPrincipal UserDetails user,
 			@ModelAttribute("schoolDataForm") SchoolDataForm form, Model model) {
 		model.addAttribute("pageTitle", "データ登録ページ");
 		model.addAttribute("dataType", RegistrationData.values());
 		model.addAttribute("dbInjectType", DBInjectType.values());
-		return "school/dataregistation";
+		return "school/data-registration";
 	}
 
 	/**
 	 * データの登録ページのファイルアップロード処理
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@PostMapping("registation/file")
-	public String postRegistation(@AuthenticationPrincipal UserDetails user,
-			@Validated @ModelAttribute("schoolDataForm") SchoolDataForm form, BindingResult bindingResult,
+	@PostMapping("registration/file")
+	public String postRegistration(
+			@AuthenticationPrincipal UserDetails user,
+			@Validated @ModelAttribute("schoolDataForm") SchoolDataForm form,
+			BindingResult bindingResult,
 			@ModelAttribute("createExcelTemplateForm") CreateExcelTemplateForm excelForm,
-			UriComponentsBuilder uriBuilder, Model model) {
+			UriComponentsBuilder uriBuilder,
+			Model model,
+			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("pageTitle", "データ登録ページ");
 			model.addAttribute("dataType", RegistrationData.values());
 			model.addAttribute("dbInjectType", DBInjectType.values());
-			return "school/dataregistation";
+			return "school/data-registration";
 		}
-		String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder).withMappingName("SC#getMain").encode().build();
-		if (form.getRegistationData() == RegistrationData.DATA_STUDENT) {
+		String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder).withMappingName("SC#getRegistration").encode().build();
+		if (form.getRegistrationData() == RegistrationData.DATA_STUDENT) {
 			// 学生データを選択されていた場合は
 			if (form.getDbInjectType() == DBInjectType.NEW_INSERT) {
 				// 新規挿入の場合
-				schoolService.insertAllGradeClass(form);
+				List<UserGradeClass> result = schoolService.insertAllGradeClass(form);
+				redirectAttributes.addFlashAttribute(
+						"registrationMessage",result.size() + "件のユーザー情報を新規登録しました");
 			} else {
 				// 更新の場合
-				schoolService.updateAllGradeClass(form);
+				List<UserGradeClass> result = schoolService.updateAllGradeClasses(form);
+				redirectAttributes.addFlashAttribute(
+						"registrationMessage", result.size() + "件のユーザー情報を更新しました"
+				);
 			}
 		} else {
 			// テストデータを選択されていた場合
 			if (form.getDbInjectType() == DBInjectType.NEW_INSERT) {
 				// 新規挿入の場合
 				List<UserTest> result = schoolService.insertAllStudentTest(form);
-				log.info(result.toString());
+				redirectAttributes.addFlashAttribute(
+						"registrationMessage", result.size() + "件のテストデータを新規登録しました");
 			} else {
 				// 更新の場合
 				List<UserTest> result = schoolService.updateAllStudentTest(form);
-				log.info(result.toString());
+				redirectAttributes.addFlashAttribute(
+						"registrationMessage", result.size() + "件のテストデータを更新しました");
 			}
 		}
 		return "redirect:" + uri;
@@ -251,7 +256,7 @@ public class SchoolController {
 			initSurveyRecordForm(form, user.getUsername());
 		}
 
-		page = new PageWrapper<>(schoolService.findAllRequestTestInfomation(form, pag), 5, uri);
+		page = new PageWrapper<>(schoolService.findAllRequestTestInformation(form, pag), 5, uri);
 
 		pageable.getSort().stream().forEach(System.out::println);
 		model.addAttribute("pageTitle", "成績調査");
@@ -271,8 +276,8 @@ public class SchoolController {
 	/**
 	 * アクセスが初めての場合にSurveyRecordForm情報を初期化するメソッド
 	 * 
-	 * @param form
-	 * @param userName
+	 * @param form surveyRecordForm
+	 * @param userName ユーザー名(氏名ではなく一意のユーザー名)
 	 */
 	private void initSurveyRecordForm(SurveyRecordForm form, String userName) {
 		int nowYear = LocalDate.now().getYear();
@@ -310,10 +315,8 @@ public class SchoolController {
 	/**
 	 * 既存のテストデータを単品で更新するページ
 	 * 
-	 * @param studentTestId
-	 * @param form
-	 * @param model
-	 * @return
+	 * @param studentTestId 学生のテストID(一意の値)
+	 * @param form studentTestForm
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("student/survey-form/update-test/{studentTestId}")
@@ -332,12 +335,6 @@ public class SchoolController {
 
 	/**
 	 * 既存のテストデータを単品で更新するリクエスト
-	 * 
-	 * @param form
-	 * @param bindingResult
-	 * @param model
-	 * @param uriBuilder
-	 * @return
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@PostMapping("student/survey-form/update-test")
@@ -369,8 +366,6 @@ public class SchoolController {
 
 	/**
 	 * 合計点調査ページ
-	 * 
-	 * @return
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("sum/survey-form")
@@ -390,14 +385,14 @@ public class SchoolController {
 
 		UserTestFunctionView funcResult = null;
 		if (form.getClazz() == Clazz.ALL) {
-			result = schoolService.findAllTestUserView(form.getYear(), (byte) form.getGrade().getGrade(),
+			result = schoolService.findAllTestUserView(form.getYear(),form.getGrade().getGrade(),
 					form.getSeason().getSeasonName(), pageable);
-			funcResult = schoolService.findAllTestUserFunctionView(form.getYear(), (byte) form.getGrade().getGrade(),
+			funcResult = schoolService.findAllTestUserFunctionView(form.getYear(), form.getGrade().getGrade(),
 					form.getSeason().getSeasonName());
 		} else {
-			result = schoolService.findAllTestUserView(form.getYear(), (byte) form.getGrade().getGrade(),
+			result = schoolService.findAllTestUserView(form.getYear(), form.getGrade().getGrade(),
 					form.getClazz().name(), form.getSeason().getSeasonName(), pageable);
-			funcResult = schoolService.findAllTestUserFunctionView(form.getYear(), (byte) form.getGrade().getGrade(),
+			funcResult = schoolService.findAllTestUserFunctionView(form.getYear(), form.getGrade().getGrade(),
 					form.getClazz().name(), form.getSeason().getSeasonName());
 		}
 
@@ -423,8 +418,6 @@ public class SchoolController {
 
 	/**
 	 * 合計点調査結果のExcel出力
-	 * 
-	 * @return
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping(path = "sum/survey-form", params = "download")
@@ -446,10 +439,10 @@ public class SchoolController {
 		Page<UserTestView> result = null;
 
 		if (form.getClazz() == Clazz.ALL) {
-			result = schoolService.findAllTestUserView(form.getYear(), (byte) form.getGrade().getGrade(),
+			result = schoolService.findAllTestUserView(form.getYear(), form.getGrade().getGrade(),
 					form.getSeason().getSeasonName(), pageable);
 		} else {
-			result = schoolService.findAllTestUserView(form.getYear(), (byte) form.getGrade().getGrade(),
+			result = schoolService.findAllTestUserView(form.getYear(), form.getGrade().getGrade(),
 					form.getClazz().name(), form.getSeason().getSeasonName(), pageable);
 		}
 //		List<StudentSumingTestResult> studentSumTestList = schoolService.createStudentSumTestPointList(form);
@@ -485,17 +478,14 @@ public class SchoolController {
 
 	/**
 	 * 検索フォームの初期化
-	 * 
-	 * @param form
-	 * @param tests
 	 */
 	private void surveyStudentRecordFormInit(SurveyStudentRecordForm form, List<UserTest> tests) {
 		// 学年をセット
-		byte latestGrade = tests.stream().map(test -> test.getTest().getGrade()).distinct().max(Byte::compareTo).get();
+		int latestGrade = tests.stream().map(test -> test.getTest().getGrade()).distinct().max(Integer::compareTo).get();
 		form.setGrade(Grade.gradeEnum(latestGrade));
 		// 時期情報をセット
 		tests.stream().map(test -> Season.seasonEnum(test.getTest().getSeasonName())).distinct()
-				.forEach(subject -> form.addSeason(subject));
+				.forEach(form::addSeason);
 		// 全教科をセット
 		form.setSubject(Subject.ALL);
 	}
@@ -537,28 +527,28 @@ public class SchoolController {
 	 * 試験データ挿入ページ
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@GetMapping("test/registation")
-	public String getTestRegistation(@ModelAttribute("newTestRegisterForm") NewTestRegisterForm form, Model model) {
+	@GetMapping("test/registration")
+	public String getTestRegistration(@ModelAttribute("newTestRegisterForm") NewTestRegisterForm form, Model model) {
 		model.addAttribute("pageTitle", "試験データ挿入");
-		return "school/test-registation";
+		return "school/test-registration";
 	}
 
 	/**
 	 * 試験データ挿入処理
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@PostMapping("test/registation")
-	public String postTestRegistation(@Validated @ModelAttribute("newTestRegisterForm") NewTestRegisterForm form,
+	@PostMapping("test/registration")
+	public String postTestRegistration(@Validated @ModelAttribute("newTestRegisterForm") NewTestRegisterForm form,
 			BindingResult bindingResult, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes,
 			Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("pageTitle", "試験データ挿入");
-			return "school/test-registation";
+			return "school/test-registration";
 		}
-		List<Test> resultList = schoolService.createTestInfomationOfYear(form.getYear());
-		String redirectPath = MvcUriComponentsBuilder.relativeTo(uriBuilder).withMappingName("SC#getTestRegistation")
+		List<Test> resultList = schoolService.createTestInformationOfYear(form.getYear());
+		String redirectPath = MvcUriComponentsBuilder.relativeTo(uriBuilder).withMappingName("SC#getTestRegistration")
 				.build();
-		redirectAttributes.addFlashAttribute("registationNum", resultList.size() + "件のテスト情報を登録しました");
+		redirectAttributes.addFlashAttribute("registrationNum", resultList.size() + "件のテスト情報を登録しました");
 		return "redirect:" + redirectPath;
 	}
 
@@ -566,20 +556,20 @@ public class SchoolController {
 	 * 学年・クラス情報挿入ページ ※追加でテストテーブルも合わせて作成するように見直す※
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@GetMapping("grade-class/registation")
-	public String getGradeClassRegistation(Model model, @ModelAttribute("gradeClassForm") GradeClassForm form) {
+	@GetMapping("grade-class/registration")
+	public String getGradeClassRegistration(Model model, @ModelAttribute("gradeClassForm") GradeClassForm form) {
 		model.addAttribute("pageTitle", "学年・クラス情報作成");
 		model.addAttribute("grade", FormEnum.Grade.values());
 		model.addAttribute("clazz", FormEnum.Clazz.ALL.valuesExcludeAll());
-		return "school/grade-class-registation";
+		return "school/grade-class-registration";
 	}
 
 	/**
 	 * 学年・クラス情報挿入処理
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
-	@PostMapping("grade-class/registation")
-	public String postGradeClassRegistation(@Validated @ModelAttribute("gradeClassForm") GradeClassForm form,
+	@PostMapping("grade-class/registration")
+	public String postGradeClassRegistration(@Validated @ModelAttribute("gradeClassForm") GradeClassForm form,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder,
 			Model model) {
 		System.out.println(form);
@@ -587,12 +577,12 @@ public class SchoolController {
 			model.addAttribute("pageTitle", "学年・クラス情報作成");
 			model.addAttribute("grade", FormEnum.Grade.values());
 			model.addAttribute("clazz", FormEnum.Clazz.ALL.valuesExcludeAll());
-			return "school/grade-class-registation";
+			return "school/grade-class-registration";
 		}
-		List<GradeClass> requestResult = schoolService.createGradeClassInfomation(form);
-		redirectAttributes.addFlashAttribute("registationNum", requestResult.size() + "件の学年クラス情報を挿入しました");
+		List<GradeClass> requestResult = schoolService.createGradeClassInformation(form);
+		redirectAttributes.addFlashAttribute("registrationNum", requestResult.size() + "件の学年クラス情報を挿入しました");
 		String redirectPath = MvcUriComponentsBuilder.relativeTo(uriBuilder)
-				.withMappingName("SC#getGradeClassRegistation").build();
+				.withMappingName("SC#getGradeClassRegistration").build();
 		return "redirect:" + redirectPath;
 	}
 
@@ -638,10 +628,6 @@ public class SchoolController {
 
 	/**
 	 * 学生検索ページ
-	 * 
-	 * @param form
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("search-student")
@@ -654,10 +640,7 @@ public class SchoolController {
 
 	/**
 	 * 学生検索ページ
-	 * 
-	 * @param form
-	 * @param model
-	 * @return
+	 *
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping(path = "search-student/execution")
@@ -682,10 +665,7 @@ public class SchoolController {
 
 	/**
 	 * 翌年の学生情報のテンプレートダウンロードページ
-	 * 
-	 * @param form
-	 * @param model
-	 * @return
+	 *
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("student-template/download")
@@ -698,11 +678,7 @@ public class SchoolController {
 	/**
 	 * 翌年の学生情報のテンプレートダウンロードリクエスト ※現在2・3学年の方は考慮されているが1学年の際はヘッダーのみ出力される状態なので
 	 * 1学年の際の処理も考える必要あり、例えば人数などの指定やUserNameの生成などが考えられる※
-	 * 
-	 * @param form
-	 * @param bindingResult
-	 * @param model
-	 * @return
+	 *
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@PostMapping("student-template/download")

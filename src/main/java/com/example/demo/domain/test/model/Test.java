@@ -25,5 +25,5 @@ public class Test implements Serializable {
 	@Column(nullable = false, length = 4)
 	private int year;
 	@Column(nullable = false, length = 1)
-	private byte grade;
+	private int grade;
 }

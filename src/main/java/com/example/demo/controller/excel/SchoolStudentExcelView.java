@@ -3,6 +3,7 @@ package com.example.demo.controller.excel;
 import static com.example.demo.common.SchoolCommonValue.FIRST_NAME;
 import static com.example.demo.common.SchoolCommonValue.LAST_NAME;
 import static com.example.demo.common.SchoolCommonValue.USER_ID;
+import static com.example.demo.common.SchoolCommonValue.USER_NAME;
 import static com.example.demo.common.SchoolCommonValue.YEAR;
 
 import java.util.List;
@@ -34,21 +35,23 @@ public class SchoolStudentExcelView extends AbstractXlsxView {
 		// ヘッダーの生成
 		Row row = sheet.createRow(0);
 		row.createCell(0).setCellValue(USER_ID);
-		row.createCell(1).setCellValue(LAST_NAME);
-		row.createCell(2).setCellValue(FIRST_NAME);
-		row.createCell(3).setCellValue(YEAR);
-		row.createCell(4).setCellValue(form.getGrade().getHeaderName());
-		row.createCell(5).setCellValue(Clazz.ALL.getHeaderName());
+		row.createCell(1).setCellValue(USER_NAME);
+		row.createCell(2).setCellValue(LAST_NAME);
+		row.createCell(3).setCellValue(FIRST_NAME);
+		row.createCell(4).setCellValue(YEAR);
+		row.createCell(5).setCellValue(form.getGrade().getHeaderName());
+		row.createCell(6).setCellValue(Clazz.ALL.getHeaderName());
 
 		// ボディー作成
 		for (int i = 0; i < studentGradeClassList.size(); i++) {
 			UserGradeClass ugc = studentGradeClassList.get(i);
 			row = sheet.createRow(i + 1);
 			row.createCell(0).setCellValue(ugc.getAppUser().getUserId());
-			row.createCell(1).setCellValue(ugc.getAppUser().getLastName());
-			row.createCell(2).setCellValue(ugc.getAppUser().getFirstName());
-			row.createCell(3).setCellValue(form.getYear());
-			row.createCell(4).setCellValue(form.getGrade().getGrade());
+			row.createCell(1).setCellValue(ugc.getAppUser().getUserName());
+			row.createCell(2).setCellValue(ugc.getAppUser().getLastName());
+			row.createCell(3).setCellValue(ugc.getAppUser().getFirstName());
+			row.createCell(4).setCellValue(form.getYear());
+			row.createCell(5).setCellValue(form.getGrade().getGrade());
 		}
 
 		// カラムのサイズ調整

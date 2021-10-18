@@ -26,7 +26,7 @@ public final class TestHelper {
 	 * @param season
 	 * @return
 	 */
-	public static Specification<Test> equalSeaxon(String season) {
+	public static Specification<Test> equalSeason(String season) {
 		return StringUtils.hasText(season) ? (root, query, cb) -> cb.equal(root.get(SEASONNAME), season) : null;
 	}
 

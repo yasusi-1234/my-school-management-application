@@ -18,11 +18,11 @@
     <th:block th:replace="fragments/header :: pageHeader"></th:block>
     
     <div class="register">
-        <p th:if="${registationNum} != null" th:text="${registationNum}" class="register-text">登録が完了しました</p>
+        <p th:if="${registrationNum} != null" th:text="${registrationNum}" class="register-text">登録が完了しました</p>
     </div>
     
     <div class="form square">
-        <form action="#" th:action="@{/school/test/registation}" th:object="${newTestRegisterForm}" method="POST">
+        <form action="#" th:action="@{/school/test/registration}" th:object="${newTestRegisterForm}" method="POST">
             
             <div class="form-title">試験概要登録</div>
             <p class="form-info">選択された年の新たな試験を全て登録します

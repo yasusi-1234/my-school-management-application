@@ -28,15 +28,15 @@
             <h3 class="link-area-title">登録処理</h3>
             <div class="link-area-item">
                 <p class="item-title">※試験データの登録を行います</p>
-                <a href="#" th:href="@{/school/registation}" sec:authorize="hasRole('TEACHER')">データ登録</a>
+                <a href="#" th:href="@{/school/registration}" sec:authorize="hasRole('TEACHER')">データ登録</a>
             </div>
             <div class="link-area-item">
                 <p class="item-title">※新たに試験情報を作成します</p>
-                <a href="#" th:href="@{/school/test/registation}" sec:authorize="hasRole('TEACHER')">試験作成</a>
+                <a href="#" th:href="@{/school/test/registration}" sec:authorize="hasRole('TEACHER')">試験作成</a>
             </div>
             <div class="link-area-item">
                 <p class="item-title">※学年・クラス情報を新たに登録します</p>
-                <a href="#" th:href="@{/school/grade-class/registation}"
+                <a href="#" th:href="@{/school/grade-class/registration}"
                     sec:authorize="hasRole('TEACHER')">学年・クラス情報作成</a>
             </div>
         </div>

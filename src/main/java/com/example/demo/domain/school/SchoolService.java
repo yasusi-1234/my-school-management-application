@@ -20,26 +20,32 @@ import com.example.demo.domain.test.model.Test;
 import com.example.demo.domain.test.model.UserTest;
 import com.example.demo.domain.test.model.propagation.UserTestFunctionView;
 import com.example.demo.domain.test.model.propagation.UserTestView;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SchoolService {
 
 	List<UserGradeClass> insertAllGradeClass(SchoolDataForm form);
 
-	List<UserGradeClass> updateAllGradeClass(SchoolDataForm form);
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    List<UserGradeClass> updateAllGradeClasses(SchoolDataForm form);
 
-	List<UserTest> insertAllStudentTest(SchoolDataForm form);
+    List<UserTest> insertAllStudentTest(SchoolDataForm form);
 
 	List<UserTest> updateAllStudentTest(SchoolDataForm form);
 
-	List<GradeClass> createGradeClassInfomation(GradeClassForm form);
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    List<GradeClass> createGradeClassInformation(GradeClassForm form);
 
-	List<Test> createTestInfomationOfYear(int year);
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    List<GradeClass> createGradeClassInformation(int year, int grade, List<String> classNames);
 
-	Page<UserTest> findAllRequestTestInfomation(SurveyRecordForm form, Pageable pageable);
+    List<Test> createTestInformationOfYear(int year);
 
 	UserTest findByUserTestId(Long studentId);
 
-	UserTest singleUpdateUserTest(Long userTestId, int newPoint);
+    UserTest singleUpdateUserTest(Long userTestId, int newPoint);
+
+	Page<UserTest> findAllRequestTestInformation(SurveyRecordForm form, Pageable pageable);
 
 	List<UserTest> findAllSingleStudentTests(Long studentId, Grade grade, Subject subject, List<Season> seasons);
 
@@ -48,13 +54,13 @@ public interface SchoolService {
 
 	List<UserGradeClass> findSearchGradeClass(int year, Grade grade, Clazz clazz);
 
-	Page<UserTestView> findAllTestUserView(int year, byte grade, String season, Pageable pageable);
+	Page<UserTestView> findAllTestUserView(int year, int grade, String season, Pageable pageable);
 
-	UserTestFunctionView findAllTestUserFunctionView(int year, byte grade, String season);
+	UserTestFunctionView findAllTestUserFunctionView(int year, int grade, String season);
 
-	Page<UserTestView> findAllTestUserView(int year, byte grade, String className, String season, Pageable pageable);
+	Page<UserTestView> findAllTestUserView(int year, int grade, String className, String season, Pageable pageable);
 
-	UserTestFunctionView findAllTestUserFunctionView(int year, byte grade, String className, String season);
+	UserTestFunctionView findAllTestUserFunctionView(int year, int grade, String className, String season);
 
 	/**
 	 * ユーザー名を元に在籍した学年・クラス情報の最新の年度・クラス名・学年情報を抽出する
@@ -80,7 +86,7 @@ public interface SchoolService {
 	 * @param className クラス名
 	 * @return
 	 */
-	List<String> findAllSeasonByYear(int year, byte grade, String className);
+	List<String> findAllSeasonByYear(int year, int grade, String className);
 
 	long finduserNameCount(String userName);
 
