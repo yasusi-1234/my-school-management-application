@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../../static/css/bootstrap-reboot.min.css" th:href="@{/css/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../../static/css/create.css" th:href="@{/css/create.css}">
+
+    <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <th:block th:replace="fragments/header :: pageHeader"></th:block>
+    
+    <div class="register">
+        <p th:if="${registrationNum} != null" th:text="${registrationNum}" class="register-text">登録が完了しました</p>
+    </div>
+    
+    <div class="form square">
+        <form action="#" th:action="@{/school/test/registration}" th:object="${newTestRegisterForm}" method="POST">
+            
+            <div class="form-title">試験概要登録</div>
+            <p class="form-info">選択された年の新たな試験を全て登録します
+            </p>
+            <p class="form-danger">※注意1※ 既に登録されている場合は何もしません</p>
+            <p class="form-danger">※注意2※ 学年・クラスの情報が登録されていない場合はその学年・クラスの試験情報は登録されません</p>
+
+            <div class="form-item">
+                <label class="form-label" for="year">年度選択：</label>
+                <input class="form-input" type="radio" th:each="item : ${year}" th:value="${item}" th:text="${item}" th:field="*{year}" id="year">
+            </div>
+            <div th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="error">値が選択されていません</div>
+            <div class="form-btn">
+				<button type="submit" class="btn-square" id="submit">作成</button>
+			</div>
+        </form>
+    </div>
+
+    <hr />
+   <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+   <script src="../../static/js/btn-barrier.js" th:src="@{/js/btn-barrier.js}"></script>
+</body>
+</html>
