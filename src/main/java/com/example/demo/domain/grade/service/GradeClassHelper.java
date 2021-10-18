@@ -21,8 +21,8 @@ public final class GradeClassHelper {
 	 * @param grade
 	 * @return
 	 */
-	public static Specification<GradeClass> equalGrade(byte grade) {
-		return (root, query, cb) -> cb.equal(root.get(GRADE), grade);
+	public static Specification<GradeClass> equalGrade(Integer grade) {
+		return grade == null ? null : (root, query, cb) -> cb.equal(root.get(GRADE), grade);
 	}
 
 	/**
@@ -56,6 +56,16 @@ public final class GradeClassHelper {
 			List<String> classNames = clazzList.stream().map(c -> c.name()).collect(Collectors.toList());
 			return root.get(CLASSNAME).in(classNames);
 		};
+	}
+
+	/**
+	 * クラス名の配列の中身と一致する要素の抽出
+	 *
+	 * @param clazzList
+	 * @return
+	 */
+	public static Specification<GradeClass> equalStringClassNames(List<String> clazzList) {
+		return (root, query, cb) -> root.get(CLASSNAME).in(clazzList);
 	}
 
 }
