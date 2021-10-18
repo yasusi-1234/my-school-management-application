@@ -17,10 +17,10 @@
     <th:block th:replace="fragments/header :: pageHeader"></th:block>
 
     <div class="register">
-        <p th:if="${registationNum} != null" th:text="${registationNum}" class="register-text">登録が完了しました</p>
+        <p th:if="${registrationNum} != null" th:text="${registrationNum}" class="register-text">登録が完了しました</p>
     </div>
     <div class="form square">
-        <form action="#" th:action="@{/school/grade-class/registation}" th:object="${gradeClassForm}" method="POST">
+        <form action="#" th:action="@{/school/grade-class/registration}" th:object="${gradeClassForm}" method="POST">
             <div class="form-title">学年・クラス情報登録</div>
             <p class="form-info">選択された年の新たな学年・クラス情報を登録します</p>
             <p class="form-danger">※注意1※ 既に登録されている場合は何もしません</p>
