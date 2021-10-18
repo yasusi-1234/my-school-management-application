@@ -84,7 +84,7 @@ public class GraphServiceImpl implements GraphService {
 	 */
 	private GraphData createAllSubjectAndMultipleSeason(Long studentId, StudentGraphConfig graphConfig) {
 		GraphData graphData = new GraphData();
-		byte grade = (byte) graphConfig.getGradeOption().getGrade();
+		int grade = graphConfig.getGradeOption().getGrade();
 		List<String> seasons = graphConfig.getSeasonOption().stream().map(s -> s.getSeasonName())
 				.collect(Collectors.toList());
 		// 生徒のテスト情報
@@ -151,7 +151,7 @@ public class GraphServiceImpl implements GraphService {
 	private GraphData createAllSubjectAndOneSeason(Long studentId, StudentGraphConfig graphConfig) {
 		GraphData graphData = new GraphData();
 		String season = graphConfig.getSeasonOption().get(0).getSeasonName(); // 指定のテスト時期
-		byte grade = (byte) graphConfig.getGradeOption().getGrade();
+		int grade = graphConfig.getGradeOption().getGrade();
 		// 生徒のテスト情報
 //		List<StudentTest> studentTestList = studentTestService.findByStudentIdAndGraphConfig(graphConfig, studentId);
 		List<OneStudentView> studentTestList = userTestRepository.findOneSeasonTestStudent(grade, studentId, season);
@@ -220,7 +220,7 @@ public class GraphServiceImpl implements GraphService {
 	 */
 	private GraphData createOneSubjectAndOneOrMultipleSeason(Long studentId, StudentGraphConfig graphConfig) {
 		GraphData graphData = new GraphData();
-		byte grade = (byte) graphConfig.getGradeOption().getGrade();
+		int grade = graphConfig.getGradeOption().getGrade();
 		String subject = graphConfig.getSubjectOption().getSubjectName();
 		List<String> seasons = graphConfig.getSeasonOption().stream().map(s -> s.getSeasonName())
 				.collect(Collectors.toList());
@@ -339,11 +339,11 @@ public class GraphServiceImpl implements GraphService {
 
 		// 単体のクラス
 		List<AnySeasonTestAverageView> oneClassStudentTests = userTestRepository.findAnySeasonTestAverage(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getClazzOption().name(), graphConfig.getSubjectOption().getSubjectName(), subjects);
 		// 学年全体
 		List<AnySeasonTestAverageView> allClassStudentTests = userTestRepository.findAnySeasonTestAverage(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getSubjectOption().getSubjectName(), subjects);
 		// 単体クラスの平均点リスト
 		List<Integer> oneClassPointList = oneClassStudentTests.stream().map(p -> p.getAvgPoint().intValue())
@@ -380,11 +380,11 @@ public class GraphServiceImpl implements GraphService {
 		// データ
 		// 単体のクラス
 		List<AnySeasonAndAllSubjectView> oneClassStudentTests = userTestRepository.findAnySeasonAndAllSubjects(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getClazzOption().name(), seasons);
 		// 学年全体
 		List<AnySeasonAndAllSubjectView> gradeStudentTests = userTestRepository.findAnySeasonAndAllSubjects(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(), seasons);
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(), seasons);
 		// 一つのクラスの合計平均
 		List<Integer> oneClassSumAverage = oneClassStudentTests.stream().map(p -> p.getAvgPoint().intValue())
 				.collect(Collectors.toList());
@@ -418,7 +418,7 @@ public class GraphServiceImpl implements GraphService {
 		List<String> seasons = graphConfig.getSeasonOption().stream().map(s -> s.getSeasonName())
 				.collect(Collectors.toList());
 		List<AllClassOneSubjectView> gradeStudentTests = userTestRepository.findAllClassOneSubjects(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getSubjectOption().getSubjectName(), seasons);
 
 		for (Clazz clazz : Clazz.valuesExcudeAllArray()) {
@@ -456,7 +456,7 @@ public class GraphServiceImpl implements GraphService {
 		List<String> seasons = graphConfig.getSeasonOption().stream().map(s -> s.getSeasonName())
 				.collect(Collectors.toList());
 		List<AllClassAndSubjectView> gradeStudentTests = userTestRepository.findAllClassAndSubjects(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(), seasons);
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(), seasons);
 
 		for (Clazz clazz : Clazz.valuesExcudeAllArray()) {
 			List<Integer> pointList = new ArrayList<>();
@@ -491,11 +491,11 @@ public class GraphServiceImpl implements GraphService {
 		graphData.addUserName(graphConfig.getGradeOption().getGrade() + "学年全体の平均点");
 		// 1のクラスのテストリスト
 		List<OneSeasonTestAverageView> oneClassTestLists = userTestRepository.findOneSeasonTestAverage(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getClazzOption().name(), graphConfig.getSeasonOption().get(0).getSeasonName());
 		// 学年全体のテストリスト
 		List<OneSeasonTestAverageView> allClassTestLists = userTestRepository.findOneSeasonTestAverage(
-				graphConfig.getYear(), (byte) graphConfig.getGradeOption().getGrade(),
+				graphConfig.getYear(), graphConfig.getGradeOption().getGrade(),
 				graphConfig.getSeasonOption().get(0).getSeasonName());
 		// 1つのクラスの教科ごとの平均点
 		List<Integer> oneClassAveragePoint = oneClassTestLists.stream().map(p -> Math.round(p.getAvgPoint().intValue()))
@@ -519,7 +519,7 @@ public class GraphServiceImpl implements GraphService {
 		}
 
 		List<Integer> pointList = userTestRepository.findAllPoints(deviationGraphConfig.getYear(),
-				(byte) deviationGraphConfig.getGradeOption().getGrade(),
+				deviationGraphConfig.getGradeOption().getGrade(),
 				deviationGraphConfig.getSeasonOption().getSeasonName(),
 				deviationGraphConfig.getSubjectOption().getSubjectName());
 		// タイトル設定
@@ -601,7 +601,7 @@ public class GraphServiceImpl implements GraphService {
 		if (!studentDeviationGraphConfig.allFieldNotNull()) {
 			return null;
 		}
-		byte grade = (byte) studentDeviationGraphConfig.getGradeOption().getGrade();
+		int grade = studentDeviationGraphConfig.getGradeOption().getGrade();
 		String season = studentDeviationGraphConfig.getSeasonOption().getSeasonName();
 		String subject = studentDeviationGraphConfig.getSubjectOption().getSubjectName();
 
