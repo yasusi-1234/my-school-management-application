@@ -169,12 +169,6 @@ public final class FormEnum {
 			return null;
 		}
 
-//		public List<Season> valuesExcludeAll() {
-//			List<Season> list = new ArrayList<>(Arrays.asList(Season.values()));
-//			int index = list.indexOf(ALL);
-//			list.remove(index);
-//			return list;
-//		}
 	}
 
 	@Getter
@@ -293,7 +287,7 @@ public final class FormEnum {
 	@Getter
 	public enum RegistrationData {
 		DATA_STUDENT("学生データ"), DATA_TEST_RESULT("生徒の試験結果");
-//		, TEST_INFOMATION("試験概要");
+//		, TEST_INFORMATION("試験概要");
 
 		RegistrationData(String dataType) {
 			this.dataType = dataType;
