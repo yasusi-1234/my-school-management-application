@@ -54,14 +54,15 @@ public class SchoolSecurityConfig extends WebSecurityConfigurerAdapter {
 				// 認証処理
 //				.loginProcessingUrl("/authenticate")
 				.loginProcessingUrl("/school/login")
-				// ログイン成功
-				.defaultSuccessUrl("/school/main")
-				// ログイン失敗
-				.failureUrl("/school/login?error=true")
 				// ユーザーのパラメータ名
 				.usernameParameter("userId")
 				// passwordのパラメータ名
-				.passwordParameter("password");
+				.passwordParameter("password")
+				// ログイン成功 決まった場所への遷移
+				.defaultSuccessUrl("/school/main", true)
+				// ログイン失敗
+				.failureUrl("/school/login?error=true");
+
 
 		http.logout()
 				// ログアウト処理
