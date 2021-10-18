@@ -34,7 +34,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "INNER JOIN AppUser au ON ut.appUser = au.userId WHERE t.year = :year AND "
 			+ "t.grade = :grade AND t.seasonName = :season GROUP BY au.userId")
-	public Page<UserTestView> findAllUserTestView(@Param("year") int year, @Param("grade") byte grade,
+	public Page<UserTestView> findAllUserTestView(@Param("year") int year, @Param("grade") int grade,
 			@Param("season") String season, Pageable pageable);
 
 	/**
@@ -51,7 +51,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "INNER JOIN AppUser au ON ut.appUser = au.userId WHERE t.year = :year AND "
 			+ "t.grade = :grade AND ut.className = :className And t.seasonName = :season GROUP BY au.userId")
-	public Page<UserTestView> findAllUserTestView(@Param("year") int year, @Param("grade") byte grade,
+	public Page<UserTestView> findAllUserTestView(@Param("year") int year, @Param("grade") int grade,
 			@Param("className") String className, @Param("season") String season, Pageable pageable);
 
 	/**
@@ -66,7 +66,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "(select au.user_id, sum(ut.point) as total from user_test ut "
 			+ "inner join test t on ut.test_id = t.test_id inner join app_user au on ut.user_id = au.user_id "
 			+ "where t.year = :year and t.grade = :grade and t.season_name = :season group by au.user_id) num")
-	public UserTestFunctionView findAllUserTestFunctionView(@Param("year") int year, @Param("grade") byte grade,
+	public UserTestFunctionView findAllUserTestFunctionView(@Param("year") int year, @Param("grade") int grade,
 			@Param("season") String season);
 
 	/**
@@ -74,7 +74,6 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 	 * 
 	 * @param year          年度
 	 * @param grade         学年
-	 * @param classNameクラス名
 	 * @param season        テスト時期
 	 * @return
 	 */
@@ -82,7 +81,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "(select au.user_id, sum(ut.point) as total from user_test ut "
 			+ "inner join test t on ut.test_id = t.test_id inner join app_user au on ut.user_id = au.user_id "
 			+ "where t.year = :year and t.grade = :grade and ut.class_name = :className and t.season_name = :season group by au.user_id) num")
-	public UserTestFunctionView findAllUserTestFunctionView(@Param("year") int year, @Param("grade") byte grade,
+	public UserTestFunctionView findAllUserTestFunctionView(@Param("year") int year, @Param("grade") int grade,
 			@Param("className") String className, @Param("season") String season);
 
 	/**
@@ -98,7 +97,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.grade = :grade AND ut.className = :className AND t.seasonName = :season "
 			+ "GROUP BY ut.className, t.subjectName")
-	public List<OneSeasonTestAverageView> findOneSeasonTestAverage(@Param("year") int year, @Param("grade") byte grade,
+	public List<OneSeasonTestAverageView> findOneSeasonTestAverage(@Param("year") int year, @Param("grade") int grade,
 			@Param("className") String className, @Param("season") String season);
 
 	/**
@@ -113,7 +112,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 	@Query("SELECT AVG(ut.point) AS avgPoint, t.subjectName AS subjectName "
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.grade = :grade AND t.seasonName = :season GROUP BY t.subjectName")
-	public List<OneSeasonTestAverageView> findOneSeasonTestAverage(@Param("year") int year, @Param("grade") byte grade,
+	public List<OneSeasonTestAverageView> findOneSeasonTestAverage(@Param("year") int year, @Param("grade") int grade,
 			@Param("season") String season);
 
 	/**
@@ -130,7 +129,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.grade = :grade AND ut.className = :className AND t.seasonName IN :seasons "
 			+ "AND t.subjectName = :subjectName GROUP BY t.subjectName, t.seasonName ORDER BY t.seasonName")
-	public List<AnySeasonTestAverageView> findAnySeasonTestAverage(@Param("year") int year, @Param("grade") byte grade,
+	public List<AnySeasonTestAverageView> findAnySeasonTestAverage(@Param("year") int year, @Param("grade") int grade,
 			@Param("className") String className, @Param("subjectName") String subjectName,
 			@Param("seasons") List<String> seasons);
 
@@ -147,7 +146,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.grade = :grade AND t.seasonName IN :seasons "
 			+ "AND t.subjectName = :subjectName GROUP BY t.subjectName, t.seasonName ORDER BY t.seasonName")
-	public List<AnySeasonTestAverageView> findAnySeasonTestAverage(@Param("year") int year, @Param("grade") byte grade,
+	public List<AnySeasonTestAverageView> findAnySeasonTestAverage(@Param("year") int year, @Param("grade") int grade,
 			@Param("subjectName") String subjectName, @Param("seasons") List<String> seasons);
 
 	/**
@@ -165,14 +164,13 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "and ut.class_name = :className and t.season_name in(:seasons) "
 			+ "group by t.season_name, au.user_id) as num group by season_name", nativeQuery = true)
 	public List<AnySeasonAndAllSubjectView> findAnySeasonAndAllSubjects(@Param("year") int year,
-			@Param("grade") byte grade, @Param("className") String className, @Param("seasons") List<String> seasons);
+			@Param("grade") int grade, @Param("className") String className, @Param("seasons") List<String> seasons);
 
 	/**
 	 * 一つの学年の全クラスの生徒のテスト時期ごとの全教科の合計点の平均値を算出し返却するメソッド
 	 * 
 	 * @param year      年度
 	 * @param grade     学年
-	 * @param className クラス名
 	 * @param seasons   テスト時期
 	 * @return
 	 */
@@ -182,7 +180,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "and t.season_name in(:seasons) "
 			+ "group by t.season_name, au.user_id) as num group by season_name", nativeQuery = true)
 	public List<AnySeasonAndAllSubjectView> findAnySeasonAndAllSubjects(@Param("year") int year,
-			@Param("grade") byte grade, @Param("seasons") List<String> seasons);
+			@Param("grade") int grade, @Param("seasons") List<String> seasons);
 
 	/**
 	 * 一つの学年の一つの教科のクラスごとのテスト時期ごとの平均点を算出し返却するメソッド
@@ -197,7 +195,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.subjectName = :subjectName AND t.grade = :grade AND t.seasonName IN :seasons "
 			+ "GROUP BY ut.className, t.seasonName ORDER BY ut.className, t.seasonName")
-	public List<AllClassOneSubjectView> findAllClassOneSubjects(@Param("year") int year, @Param("grade") byte grade,
+	public List<AllClassOneSubjectView> findAllClassOneSubjects(@Param("year") int year, @Param("grade") int grade,
 			@Param("subjectName") String subjectName, @Param("seasons") List<String> seasons);
 
 	// 全クラス・全教科・テスト時期が2以上
@@ -215,7 +213,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "where t.grade = :grade and t.year = :year and t.season_name in (:seasons) "
 			+ "group by au.user_id, t.season_name, ut.class_name) as num "
 			+ "group by class_name, season_name order by class_name, season_name", nativeQuery = true)
-	public List<AllClassAndSubjectView> findAllClassAndSubjects(@Param("year") int year, @Param("grade") byte grade,
+	public List<AllClassAndSubjectView> findAllClassAndSubjects(@Param("year") int year, @Param("grade") int grade,
 			@Param("seasons") List<String> seasons);
 
 	/**
@@ -230,7 +228,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "au.firstName AS firstName, au.lastName AS lastName "
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId INNER JOIN AppUser au ON ut.appUser = au.userId "
 			+ "WHERE t.grade = :grade AND au.userId = :userId AND t.seasonName = :season ORDER BY t.subjectName")
-	public List<OneStudentView> findOneSeasonTestStudent(@Param("grade") byte grade, @Param("userId") Long userId,
+	public List<OneStudentView> findOneSeasonTestStudent(@Param("grade") int grade, @Param("userId") Long userId,
 			@Param("season") String season);
 
 	/**
@@ -246,7 +244,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId INNER JOIN AppUser au ON ut.appUser = au.userId "
 			+ "WHERE t.grade = :grade AND au.userId = :userId AND t.seasonName IN (:seasons) "
 			+ "GROUP BY t.seasonName ORDER BY t.seasonName")
-	public List<OneStudentView> findAnySeasonAllSubjectTestStudent(@Param("grade") byte grade,
+	public List<OneStudentView> findAnySeasonAllSubjectTestStudent(@Param("grade") int grade,
 			@Param("userId") Long userId, @Param("seasons") List<String> seasons);
 
 	/**
@@ -263,7 +261,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 			+ "FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId INNER JOIN AppUser au ON ut.appUser = au.userId "
 			+ "WHERE t.grade = :grade AND au.userId = :userId AND t.seasonName IN (:seasons) AND t.subjectName = :subjectName "
 			+ "ORDER BY t.seasonName")
-	public List<OneStudentView> findAnySeasonOneSubjectTestStudent(@Param("grade") byte grade,
+	public List<OneStudentView> findAnySeasonOneSubjectTestStudent(@Param("grade") int grade,
 			@Param("userId") Long userId, @Param("subjectName") String subjectName,
 			@Param("seasons") List<String> seasons);
 
@@ -278,7 +276,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 	 */
 	@Query("SELECT ut.point FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year = :year AND t.grade = :grade AND t.seasonName = :season AND t.subjectName = :subjectName")
-	public List<Integer> findAllPoints(@Param("year") Integer year, @Param("grade") byte grade,
+	public List<Integer> findAllPoints(@Param("year") Integer year, @Param("grade") int grade,
 			@Param("season") String season, @Param("subjectName") String subjectName);
 
 	/**
@@ -293,7 +291,7 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 	@Query("SELECT t.year FROM UserTest ut  INNER JOIN Test t ON ut.test = t.testId "
 			+ "INNER JOIN AppUser au ON ut.appUser = au.userId WHERE au.userId =:studentId "
 			+ "AND t.grade =:grade AND t.seasonName =:season AND t.subjectName =:subjectName ")
-	public Integer findYearOfTestByStudentInfo(@Param("studentId") Long studentId, @Param("grade") byte grade,
+	public Integer findYearOfTestByStudentInfo(@Param("studentId") Long studentId, @Param("grade") int grade,
 			@Param("season") String season, @Param("subjectName") String subjectName);
 
 	/**
@@ -317,6 +315,6 @@ public interface UserTestRepository extends JpaRepository<UserTest, Long>, JpaSp
 	@Query("SELECT t.seasonName FROM UserTest ut INNER JOIN Test t ON ut.test = t.testId "
 			+ "WHERE t.year =:year AND t.grade =:grade AND ut.className =:className "
 			+ "GROUP BY t.seasonName ORDER BY t.seasonName DESC")
-	public List<String> findAllSeasonByYear(@Param("year") int year, @Param("grade") byte grade,
+	public List<String> findAllSeasonByYear(@Param("year") int year, @Param("grade") int grade,
 			@Param("className") String className);
 }
