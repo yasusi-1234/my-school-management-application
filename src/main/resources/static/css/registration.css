@@ -1,0 +1,120 @@
+#all-component {
+  position: relative;
+  z-index: 100;
+}
+
+.main {
+  position: relative;
+}
+
+.back {
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
+  position: fixed;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.75);
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.back-element {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.back-element-char {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.loading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.loading > span {
+  margin: 0px 10px;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background-color: #363232;
+  -webkit-animation: loading_anime 1.2s linear 0s infinite normal both;
+          animation: loading_anime 1.2s linear 0s infinite normal both;
+}
+
+.loading > span:nth-of-type(2) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+
+.loading > span:nth-of-type(3) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+}
+
+@-webkit-keyframes loading_anime {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  25% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  75% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+}
+
+@keyframes loading_anime {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  25% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  75% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+}
+/*# sourceMappingURL=registration.css.map */
