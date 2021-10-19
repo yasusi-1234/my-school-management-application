@@ -81,6 +81,61 @@
   text-align: center;
 }
 
+.btn {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  font-weight: 600;
+  color: teal;
+  background-color: aquamarine;
+  padding: 8px 50px;
+  margin: 10px;
+  border: 1px solid teal;
+  border-radius: 10px;
+  -webkit-transition: all 0.2s 0.2s ease;
+  transition: all 0.2s 0.2s ease;
+}
+
+.btn_return {
+  color: gray;
+  background-color: lightgray;
+  border: 1px solid gray;
+}
+
+.btn-login {
+  color: gray;
+  background-color: lightgray;
+  border-color: gray;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn-square {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  padding: 8px 50px;
+  margin: 10px;
+  border: 2px solid black;
+  -webkit-transition: all 0.3s 0.2s ease;
+  transition: all 0.3s 0.2s ease;
+}
+
+.btn-square:hover {
+  color: white;
+  background-color: black;
+  border: 2px solid white;
+}
+
 .ma-t-10 {
   margin-top: 10px;
 }
@@ -137,6 +192,10 @@
   padding-bottom: 15px;
 }
 
+.pa-b-10 {
+  padding-bottom: 10px;
+}
+
 .pa-r-15 {
   padding-right: 15px;
 }
@@ -166,63 +225,17 @@
   pointer-events: none;
 }
 
-.btn {
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  font-weight: 600;
-  color: teal;
-  background-color: aquamarine;
-  padding: 8px 50px;
-  margin: 10px;
-  border: 1px solid teal;
-  border-radius: 10px;
-  -webkit-transition: all 0.2s 0.2s ease;
-  transition: all 0.2s 0.2s ease;
-}
-
-.btn_return {
-  color: gray;
-  background-color: lightgray;
-  border: 1px solid gray;
-}
-
-.btn-login {
-  color: gray;
-  background-color: lightgray;
-  border-color: gray;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-.btn-square {
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  font-weight: bold;
-  color: black;
-  background-color: white;
-  padding: 8px 50px;
-  margin: 10px;
-  border: 2px solid black;
-  -webkit-transition: all 0.3s 0.2s ease;
-  transition: all 0.3s 0.2s ease;
-}
-
-.btn-square:hover {
-  color: white;
-  background-color: black;
-  border: 2px solid white;
-}
-
 body {
   background-color: #efeffd;
+}
+
+.square #form .form-item {
+  margin-left: 0;
+  text-align: center;
+}
+
+.square #form .form-item .form-label {
+  font-size: 18px;
 }
 
 .title {

@@ -1,0 +1,16 @@
+
+.square{
+
+    & #form{
+
+        & .form-item{
+            margin-left: 0;
+            text-align: center;
+
+            & .form-label{
+                font-size: 18px;
+            }
+        }
+    }
+    
+}

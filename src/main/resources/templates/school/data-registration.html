@@ -10,56 +10,85 @@
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
     <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
     <link rel="stylesheet" href="../../static/css/create.css" th:href="@{/css/create.css}">
+    <link rel="stylesheet" href="../../static/css/registration.css" th:href="@{/css/registration.css}">
 
     <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
     <title>School Data Registration</title>
 </head>
 
 <body>
-    <th:block th:replace="fragments/header :: pageHeader"></th:block>
-    
-    <div class="register">
-        <p th:if="${registrationMessage} != null" th:text="${registrationMessage}" class="register-text">登録が完了しました</p>
+    <div id="all-component">
+        <div class="main">
+            <th:block th:replace="fragments/header :: pageHeader"></th:block>
+
+            <div class="register">
+                <p th:if="${registrationMessage} != null" th:text="${registrationMessage}" class="register-text">
+                    登録が完了しました
+                </p>
+            </div>
+
+            <div class="form square">
+                <form action="#" th:action="@{/school/registration/file}" enctype="multipart/form-data"
+                    th:object="${schoolDataForm}" method="post">
+
+                    <div class="form-title">Excelデータ登録</div>
+                    <p class="form-info">選択されたExcelデータから新規挿入、更新を行います
+                    </p>
+                    <p class="form-danger">※注意※ Excel形式のファイルのみサポートされています</p>
+
+                    <div class="form-item">
+                        <label class="form-label" for="dataType">データタイプ：</label>
+                        <input class="form-input" type="radio" th:each="type : ${dataType}" th:value="${type.name()}"
+                            th:text="${type.dataType}" th:field="*{registrationData}" id="dataType" />
+                    </div>
+
+                    <div class="error" th:if="${#fields.hasErrors('registrationData')}" th:errors="*{registrationData}">
+                        値が選択されていません</div>
+
+                    <div class="form-item">
+                        <label class="form-label" for="dbInjectType">挿入オプション：</label>
+                        <input class="form-input" type="radio" th:each="type : ${dbInjectType}"
+                            th:value="${type.name()}" th:text="${type.injectType}" th:field="*{dbInjectType}"
+                            id="dbInjectType">
+                    </div>
+
+
+                    <div class="error" th:if="${#fields.hasErrors('dbInjectType')}" th:errors="*{dbInjectType}">
+                        値が選択されていません
+                    </div>
+
+                    <div class="form-item">
+                        <label class="form-label" for="excelData">Excelデータ：</label>
+                        <input class="form-input" type="file" th:field="*{multipartFile}" id="excelData">
+                    </div>
+                    <div class="error" th:if="${#fields.hasErrors('multipartFile')}" th:errors="*{multipartFile}">
+                        値が選択されていません</div>
+                    <div class="form-btn">
+                        <button type="submit" class="btn-square" id="submit">実行</button>
+                    </div>
+                </form>
+            </div>
+            <hr />
+            <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+        </div>
+        <div class="back">
+            <div class="back-element">
+                <div class="back-element-char pa-b-10">
+                    読み込み中...
+                </div>
+                <div class="back-element-char pa-b-10">
+                    しばらくお待ちください
+                </div>
+                <div class="loading">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div class="form square">
-        <form action="#" th:action="@{/school/registration/file}" enctype="multipart/form-data"
-            th:object="${schoolDataForm}" method="post">
 
-            <div class="form-title">Excelデータ登録</div>
-            <p class="form-info">選択されたExcelデータから新規挿入、更新を行います
-            </p>
-            <p class="form-danger">※注意※ Excel形式のファイルのみサポートされています</p>
-
-            <div class="form-item">
-                <label class="form-label" for="dataType">データタイプ：</label>
-                <input class="form-input" type="radio" th:each="type : ${dataType}" th:value="${type.name()}" th:text="${type.dataType}"
-                    th:field="*{registrationData}" id="dataType" />
-            </div>
-
-            <div class="error" th:if="${#fields.hasErrors('registrationData')}" th:errors="*{registrationData}">値が選択されていません</div>
-            
-            <div class="form-item">
-                <label class="form-label" for="dbInjectType">挿入オプション：</label>
-                <input class="form-input" type="radio" th:each="type : ${dbInjectType}" th:value="${type.name()}" th:text="${type.injectType}"
-                    th:field="*{dbInjectType}" id="dbInjectType">
-            </div>
-
-            
-            <div class="error" th:if="${#fields.hasErrors('dbInjectType')}" th:errors="*{dbInjectType}">値が選択されていません</div>
-            
-            <div class="form-item">
-                <label class="form-label" for="excelData">Excelデータ：</label>
-                <input class="form-input" type="file" th:field="*{multipartFile}" id="excelData">
-            </div>
-            <div class="error" th:if="${#fields.hasErrors('multipartFile')}" th:errors="*{multipartFile}">値が選択されていません</div>
-            <div class="form-btn">
-				<button type="submit" class="btn-square" id="submit">実行</button>
-			</div>
-        </form>
-    </div>
-    <hr />
-    <th:block th:replace="fragments/footer :: pageFooter"></th:block>
+    <script src="../../static/js/show-wait.js" th:src="@{/js/show-wait.js}"></script>
 </body>
 
 </html>

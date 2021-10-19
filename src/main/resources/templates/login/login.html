@@ -5,31 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
-    
     <link rel="stylesheet" href="../../static/css/bootstrap-reboot.min.css" th:href="@{/css/bootstrap-reboot.min.css}">
     <link rel="stylesheet" href="../../static/css/login.css" th:href="@{/css/login.css}">
+
+    <script src="#" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    
     <title>LoginPage</title>
 </head>
 <body>
     <h1 class="title">ログインページ</h1>
     <hr>
-    <div class="form ma-t-35">
-        <form action="#" th:action="@{/school/login}" method="post" class="pa-15">
+    <div class="form square ma-t-35">
+        <form action="#" th:action="@{/school/login}" method="post" class="pa-15" id="form">
             <div class="form-title">ログイン情報入力</div>
             <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null"
             th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}" class="error pa-t-15">IDまたはパスワードが間違っています</div>
             
             <div class="form-item pa-t-15">
                 <label class="form-label" for="userId">ユーザーID:</label>
-                <input class="form-text" type="text" name="userId" id="userId" />
+                <input class="form-input" type="text" name="userId" id="userId" />
             </div>
             <div class="form-item pa-t-15">
                 <label class="form-label" for="password">パスワード:</label>
-                <input class="form-text" type="password" name="password" id="password" />
+                <input class="form-input" type="password" name="password" id="password" />
             </div>
             <div class="form-btn pa-t-15">
-                <button type="submit" class="btn btn-login">ログイン</button>
+                <button type="submit" class="btn-square">ログイン</button>
             </div>
         </form>
     </div>
