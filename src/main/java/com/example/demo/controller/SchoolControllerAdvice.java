@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -98,6 +99,16 @@ public class SchoolControllerAdvice {
 
 	@ExceptionHandler
 	public String requiredHeaderValueNotExistExceptionHandler(RequiredHeaderValueNotExistException ex, Model model) {
+//		model.addAttribute("cause", ex.getAbnormalPointIndex());
+		model.addAttribute("status", HttpStatus.BAD_REQUEST);
+		model.addAttribute("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
+		model.addAttribute("timestamp", LocalDateTime.now().withNano(0));
+		model.addAttribute("message", ex.getMessage());
+		return "/error/400";
+	}
+
+	@ExceptionHandler
+	public String httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex, Model model) {
 //		model.addAttribute("cause", ex.getAbnormalPointIndex());
 		model.addAttribute("status", HttpStatus.BAD_REQUEST);
 		model.addAttribute("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
