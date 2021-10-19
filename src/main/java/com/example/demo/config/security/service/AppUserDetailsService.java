@@ -20,7 +20,8 @@ public class AppUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (!StringUtils.hasText(username)) {
-			throw new IllegalArgumentException("username is empty.");
+			throw new UsernameNotFoundException("リクエストされたユーザー名のユーザーは存在しません");
+//			throw new IllegalArgumentException("username is empty.");
 		}
 
 		AppUser appUser = repository.findByUserName(username);
