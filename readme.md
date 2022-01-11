@@ -314,10 +314,10 @@ springのjpa・securityやjavaでのexcel操作のライブラリ(poi)等をあ�
 
 ![ユーザーログインシーケンス図](uml/login_sq.png)
 
-[//]: # ()
-[//]: # (### タスク登録処理の流れ)
 
-[//]: # (![タスク登録シーケンス図]&#40;plantuml/task_register_se.png&#41;)
+### ユーザー・テスト情報登録更新処理の流れ
+
+![ユーザー・テスト登録更新シーケンス図](uml/user_test_register_se.png)
 
 [//]: # ()
 [//]: # (### タスク更新処理の流れ)
