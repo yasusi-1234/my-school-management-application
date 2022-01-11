@@ -304,12 +304,6 @@ springのjpa・securityやjavaでのexcel操作のライブラリ(poi)等をあ�
 
 ### シーケンス図
 
-[//]: # ()
-[//]: # (#### ユーザー登録の流れ)
-
-[//]: # (![ユーザー登録シーケンス図]&#40;plantuml/signup_se.png&#41;)
-
-
 ### ログイン処理の流れ
 
 ![ユーザーログインシーケンス図](uml/login_sq.png)
@@ -324,15 +318,11 @@ springのjpa・securityやjavaでのexcel操作のライブラリ(poi)等をあ�
 
 ![成績調査シーケンス図](uml/test_survey_sq.png)
 
-[//]: # ()
-[//]: # (### タスク削除処理の流れ)
 
-[//]: # (![タスク削除シーケンス図]&#40;plantuml/task_delete_se.png&#41;)
+### 認可処理の流れ
 
-[//]: # ()
-[//]: # (### タスク参照処理の流れ)
+![認可シーケンス図](uml/security_sq.png)
 
-[//]: # (![タスク参照シーケンス図]&#40;plantuml/task_select_se.png&#41;)
 
 [//]: # ()
 [//]: # (## クラス図)
