@@ -352,8 +352,6 @@ public class SchoolController {
 		}
 		String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder).withMappingName("SC#getStudentTestUpdate")
 				.arg(0, form.getStudentTestId()).build();
-		// セッションの破棄
-//		sessionStatus.setComplete();
 
 		// 更新処理を実装する
 		schoolService.singleUpdateUserTest(form.getStudentTestId(), form.getPoint());
@@ -399,9 +397,6 @@ public class SchoolController {
 		result.getContent().stream()
 				.forEach(el -> log.info("firstName: {}, lastName: {}, className: {}, totalPoint: {}", el.getFirstName(),
 						el.getLastName(), el.getClazzName(), el.getSumPoint()));
-//		result.getContent().stream().limit(10)
-//				.forEach(ut -> log.info(ut.getFirstName() + " : " + ut.getLastName() + " : " + ut.getSumPoint()));
-//		log.info("{} : {} : {}", funcResult.getMinPoint(), funcResult.getMaxPoint(), funcResult.getAvgPoint());
 
 		model.addAttribute("sumTestList", result.getContent());
 		model.addAttribute("testResult", funcResult);
