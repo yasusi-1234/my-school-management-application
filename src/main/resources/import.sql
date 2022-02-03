@@ -27,21 +27,21 @@ insert into app_user(user_name, password, first_name, last_name, role_id) values
 insert into app_user(user_name, password, first_name, last_name, role_id) values('yoshitoki-houjou', '$2a$08$PtMBmcbmd/L6xkNgu.goyuRpCwHpunatpifBGK12TtI2kw8Ed3Adu', '義時', '北条', 2);
 
 -- 学年クラス
-insert into grade_class(grade, class_name, year) values(1, 'A', 2021);
-insert into grade_class(grade, class_name, year) values(1, 'B', 2021);
-insert into grade_class(grade, class_name, year) values(1, 'C', 2021);
-insert into grade_class(grade, class_name, year) values(1, 'D', 2021);
-insert into grade_class(grade, class_name, year) values(1, 'E', 2021);
-insert into grade_class(grade, class_name, year) values(2, 'A', 2021);
-insert into grade_class(grade, class_name, year) values(2, 'B', 2021);
-insert into grade_class(grade, class_name, year) values(2, 'C', 2021);
-insert into grade_class(grade, class_name, year) values(2, 'D', 2021);
-insert into grade_class(grade, class_name, year) values(2, 'E', 2021);
-insert into grade_class(grade, class_name, year) values(3, 'A', 2021);
-insert into grade_class(grade, class_name, year) values(3, 'B', 2021);
-insert into grade_class(grade, class_name, year) values(3, 'C', 2021);
-insert into grade_class(grade, class_name, year) values(3, 'D', 2021);
-insert into grade_class(grade, class_name, year) values(3, 'E', 2021);
+insert into grade_class(grade, class_name, year) values(1, 'A', 2022);
+insert into grade_class(grade, class_name, year) values(1, 'B', 2022);
+insert into grade_class(grade, class_name, year) values(1, 'C', 2022);
+insert into grade_class(grade, class_name, year) values(1, 'D', 2022);
+insert into grade_class(grade, class_name, year) values(1, 'E', 2022);
+insert into grade_class(grade, class_name, year) values(2, 'A', 2022);
+insert into grade_class(grade, class_name, year) values(2, 'B', 2022);
+insert into grade_class(grade, class_name, year) values(2, 'C', 2022);
+insert into grade_class(grade, class_name, year) values(2, 'D', 2022);
+insert into grade_class(grade, class_name, year) values(2, 'E', 2022);
+insert into grade_class(grade, class_name, year) values(3, 'A', 2022);
+insert into grade_class(grade, class_name, year) values(3, 'B', 2022);
+insert into grade_class(grade, class_name, year) values(3, 'C', 2022);
+insert into grade_class(grade, class_name, year) values(3, 'D', 2022);
+insert into grade_class(grade, class_name, year) values(3, 'E', 2022);
 
 -- insert into user_grade_class(user_id, grade_id) values(1, 1);
 -- insert into user_grade_class(user_id, grade_id) values(2, 2);

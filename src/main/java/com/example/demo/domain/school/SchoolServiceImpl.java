@@ -43,7 +43,7 @@ import com.example.demo.domain.appuser.repository.AppUserRepository;
 import com.example.demo.domain.appuser.repository.RoleRepository;
 import com.example.demo.domain.appuser.service.UserHelper;
 import com.example.demo.domain.excel.ExcelInformationReader;
-import com.example.demo.domain.excel.ExcelInformationReader.NecessaryInformation;
+import com.example.demo.domain.excel.NecessaryInformation;
 import com.example.demo.domain.grade.model.GradeClass;
 import com.example.demo.domain.grade.model.UserGradeClass;
 import com.example.demo.domain.grade.model.propagation.UserGradeClassView;
@@ -861,7 +861,7 @@ public class SchoolServiceImpl implements SchoolService {
 		return userRepository.save(appUser);
 	}
 
-	/********************** private ***************************/
+	// ********************** private ***************************
 
 	/**
 	 * 学年クラス情報・ユーザーの中間テーブルの情報を、年度と学年を指定して取得する
