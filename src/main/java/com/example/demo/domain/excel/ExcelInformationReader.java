@@ -1,22 +1,12 @@
 package com.example.demo.domain.excel;
 
 import static com.example.demo.common.SchoolCommonValue.BR;
-import static com.example.demo.common.SchoolCommonValue.CLASS_NAME;
-import static com.example.demo.common.SchoolCommonValue.FIRST_NAME;
-import static com.example.demo.common.SchoolCommonValue.GRADE;
-import static com.example.demo.common.SchoolCommonValue.LAST_NAME;
 import static com.example.demo.common.SchoolCommonValue.POINT;
-import static com.example.demo.common.SchoolCommonValue.SEASON_NAME;
-import static com.example.demo.common.SchoolCommonValue.SUBJECT_NAME;
-import static com.example.demo.common.SchoolCommonValue.USER_ID;
-import static com.example.demo.common.SchoolCommonValue.USER_NAME;
-import static com.example.demo.common.SchoolCommonValue.YEAR;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -120,7 +110,7 @@ public class ExcelInformationReader {
 			// 得点に異常のあるセルが存在した場合は、その情報を元に例外を投げる
 			if (!abnormalPointList.isEmpty()) {
 				StringBuilder sb = new StringBuilder("点数に異常な値が見つかりました").append(BR).append("異常が見つかった行： ");
-				String abnormalLine = abnormalPointList.stream().map(index -> index.toString())
+				String abnormalLine = abnormalPointList.stream().map(Object::toString)
 						.collect(Collectors.joining(", "));
 				sb.append(abnormalLine).append(BR).append("上記の行に異常があります。確認の上修正してください");
 				throw new PointAbnormalException(sb.toString(), abnormalPointList);
@@ -131,11 +121,7 @@ public class ExcelInformationReader {
 				throw new RequestDataBodyNotFoundException("Excelヘッダーに対応したデータが入力されていません");
 			}
 
-		} catch (EncryptedDocumentException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
+		} catch (EncryptedDocumentException | IOException e) {
 			e.printStackTrace();
 		}
 
@@ -238,85 +224,6 @@ public class ExcelInformationReader {
 		}
 	}
 
-//	 implements Operation
-	public enum NecessaryInformation {
-		STUDENT_UPDATE {
-			@Override
-			public Map<String, Integer> getNecessaryMap() {
-				Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-				map.put(USER_ID, -1);
-				map.put(USER_NAME, -1);
-				map.put(FIRST_NAME, -1);
-				map.put(LAST_NAME, -1);
-				return map;
-			}
-
-		},
-		GRADE_CLASS_ONLY {
-			@Override
-			public Map<String, Integer> getNecessaryMap() {
-				Map<String, Integer> map = new HashMap<String, Integer>();
-				map.put(GRADE, -1);
-				map.put(CLASS_NAME, -1);
-				map.put(YEAR, -1);
-				return map;
-			}
-		},
-		STUDENT_GRADE_CLASS_UPDATE {
-			@Override
-			public Map<String, Integer> getNecessaryMap() {
-				Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-				map.put(USER_ID, -1);
-				map.put(USER_NAME, -1);
-				map.put(FIRST_NAME, -1);
-				map.put(LAST_NAME, -1);
-				map.put(GRADE, -1);
-				map.put(CLASS_NAME, -1);
-				map.put(YEAR, -1);
-				return map;
-			}
-		},
-		STUDENT_GRADE_CLASS_INSERT {
-			@Override
-			public Map<String, Integer> getNecessaryMap() {
-				Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-				map.put(USER_NAME, -1); // User_Nameは初期値として作成されていることを想定
-				map.put(FIRST_NAME, -1);
-				map.put(LAST_NAME, -1);
-				map.put(GRADE, -1);
-				map.put(CLASS_NAME, -1);
-				map.put(YEAR, -1);
-				return map;
-			}
-		},
-		STUDENT_TEST {
-			@Override
-			public Map<String, Integer> getNecessaryMap() {
-				Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-				map.put(USER_ID, -1);
-				map.put(USER_NAME, -1);
-				map.put(FIRST_NAME, -1);
-				map.put(LAST_NAME, -1);
-				map.put(CLASS_NAME, -1);
-				map.put(SEASON_NAME, -1);
-				map.put(SUBJECT_NAME, -1);
-				map.put(YEAR, -1);
-				map.put(GRADE, -1);
-				map.put(POINT, -1);
-				return map;
-			}
-		};
-
-		public abstract Map<String, Integer> getNecessaryMap();
-
-//		public abstract Map<String, Boolean> getCheckHeaderMap();
-
-		public List<Map<String, String>> returnModelMap() {
-			return new ArrayList<Map<String, String>>();
-		}
-
-	}
-
 	/**
 	 * registrationData(学生情報かテスト情報か)の情報とdbinjectType(新規挿入・更新)情報を元に
 	 * 適合したNecessaryInformationの種類を返却する
@@ -337,13 +244,7 @@ public class ExcelInformationReader {
 			}
 		} else {
 			// データタイプがテスト結果の場合
-			if (type == DBInjectType.DB_UPDATE) {
-				// 更新の場合
-				return NecessaryInformation.STUDENT_TEST;
-			} else {
-				// 新規挿入の場合
-				return NecessaryInformation.STUDENT_TEST;
-			}
+			return NecessaryInformation.STUDENT_TEST;
 		}
 	}
 
