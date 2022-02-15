@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -99,9 +98,8 @@ public class SchoolController {
 	 */
 	@ModelAttribute("year")
 	public List<Integer> years() {
-		List<Integer> years = Stream.iterate(LocalDate.now().getYear() - 2, i -> i + 1).limit(5)
+		return Stream.iterate(LocalDate.now().getYear() - 2, i -> i + 1).limit(5)
 				.collect(Collectors.toList());
-		return years;
 	}
 
 	private final SchoolService schoolService;
@@ -115,7 +113,7 @@ public class SchoolController {
 	 * ログインページ
 	 */
 	@GetMapping("login")
-	public String getLogin(Model model) {
+	public String getLogin() {
 		return "login/login";
 	}
 
@@ -123,7 +121,7 @@ public class SchoolController {
 	 * メインページ
 	 */
 	@GetMapping("main")
-	public String getMain(@AuthenticationPrincipal UserDetails user, Model model) {
+	public String getMain(Model model) {
 		model.addAttribute("pageTitle", "メインページ");
 		return "school/main";
 	}
@@ -133,7 +131,7 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("registration")
-	public String getRegistration(@AuthenticationPrincipal UserDetails user,
+	public String getRegistration(
 			@ModelAttribute("schoolDataForm") SchoolDataForm form, Model model) {
 		model.addAttribute("pageTitle", "データ登録ページ");
 		model.addAttribute("dataType", RegistrationData.values());
@@ -147,7 +145,6 @@ public class SchoolController {
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@PostMapping("registration/file")
 	public String postRegistration(
-			@AuthenticationPrincipal UserDetails user,
 			@Validated @ModelAttribute("schoolDataForm") SchoolDataForm form,
 			BindingResult bindingResult,
 			@ModelAttribute("createExcelTemplateForm") CreateExcelTemplateForm excelForm,
@@ -338,8 +335,9 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@PostMapping("student/survey-form/update-test")
-	public String postStudentTestUpdate(@Validated @ModelAttribute("studentTestForm") StudentTestForm form,
-			BindingResult bindingResult, Model model, UriComponentsBuilder uriBuilder, SessionStatus sessionStatus,
+	public String postStudentTestUpdate(
+			@Validated @ModelAttribute("studentTestForm") StudentTestForm form,
+			BindingResult bindingResult, Model model, UriComponentsBuilder uriBuilder,
 			RedirectAttributes redirectAttributes) {
 		System.out.println(form);
 		if (bindingResult.hasErrors()) {
@@ -367,11 +365,9 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("sum/survey-form")
-	public String getSumSurveyForm(@AuthenticationPrincipal UserDetails user,
+	public String getSumSurveyForm(
 			@ModelAttribute("sumSurveyForm") SumSurveyForm form, Model model) {
 		if (form.yearGradeClazzIsNull()) {
-//			schoolService.setSumSurveyForm(form, user.getUsername());
-			// テスト用
 			form.setYear(LocalDate.now().getYear());
 			form.setClazz(Clazz.ALL);
 			form.setSeason(Season.MIDDLE_FIRST_SEMESTER);
@@ -394,7 +390,7 @@ public class SchoolController {
 					form.getClazz().name(), form.getSeason().getSeasonName());
 		}
 
-		result.getContent().stream()
+		result.getContent()
 				.forEach(el -> log.info("firstName: {}, lastName: {}, className: {}, totalPoint: {}", el.getFirstName(),
 						el.getLastName(), el.getClazzName(), el.getSumPoint()));
 
@@ -416,8 +412,8 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping(path = "sum/survey-form", params = "download")
-	public ModelAndView getSumSurveyFormDownLoad(@AuthenticationPrincipal UserDetails user,
-			@Validated @ModelAttribute("sumSurveyForm") SumSurveyForm form, BindingResult bindingResult, Model model) {
+	public ModelAndView getSumSurveyFormDownLoad(
+			@Validated @ModelAttribute("sumSurveyForm") SumSurveyForm form, BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView();
 		if (bindingResult.hasErrors()) {
 			mav.addObject("pageTitle", "Excel出力");
@@ -440,7 +436,6 @@ public class SchoolController {
 			result = schoolService.findAllTestUserView(form.getYear(), form.getGrade().getGrade(),
 					form.getClazz().name(), form.getSeason().getSeasonName(), pageable);
 		}
-//		List<StudentSumingTestResult> studentSumTestList = schoolService.createStudentSumTestPointList(form);
 		mav.addObject("studentSumTestList", result.getContent());
 		mav.addObject("sumSurveyForm", form);
 		mav.setView(new TestTotalScoreExcelView());
@@ -452,7 +447,8 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("student/survey-form/{studentId}")
-	public String getStudentSurvey(@AuthenticationPrincipal UserDetails user, @PathVariable("studentId") Long studentId,
+	public String getStudentSurvey(
+			@PathVariable("studentId") Long studentId,
 			Model model, @ModelAttribute("surveyStudentRecordForm") SurveyStudentRecordForm form) {
 		if (form.allunselected()) {
 
@@ -461,11 +457,9 @@ public class SchoolController {
 		}
 		model.addAttribute("pageTitle", "個人成績調査");
 		model.addAttribute("studentId", studentId);
-//		model.addAttribute("role", user.getAuthorities().stream().findFirst().get().getAuthority());
 		model.addAttribute("grade", FormEnum.Grade.values());
 		model.addAttribute("season", FormEnum.Season.values());
 		model.addAttribute("subject", FormEnum.Subject.values());
-//		model.addAttribute("graphType", GraphType.values()); // 後に削除
 		model.addAttribute("requestList", schoolService.findAllSingleStudentTests(studentId, form.getGrade(),
 				form.getSubject(), form.getSeason()));
 		return "school/student-survey-form";
@@ -626,7 +620,7 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping("search-student")
-	public String getSerchStudent(@ModelAttribute("studentSearchForm") StudentSearchForm form, Model model) {
+	public String getSearchStudent(@ModelAttribute("studentSearchForm") StudentSearchForm form, Model model) {
 		form.setYear(LocalDate.now().getYear());
 		model.addAttribute("grade", FormEnum.Grade.values());
 		model.addAttribute("clazz", FormEnum.Clazz.ALL.valuesExcludeAll());
@@ -639,14 +633,14 @@ public class SchoolController {
 	 */
 	@PreAuthorize(AUTHORITY_TEACHER)
 	@GetMapping(path = "search-student/execution")
-	public String getSerchStudentExecution(
+	public String getSearchStudentExecution(
 			@PageableDefault(size = 50, page = 0, direction = Direction.ASC, sort = {
 					"gradeClass.className" }) Pageable pageable,
 			@ModelAttribute("studentSearchForm") StudentSearchForm form, Model model, UriComponentsBuilder builder) {
 		System.out.println(form);
 		Page<UserGradeClass> pageList = schoolService.findSearchGradeClass(form.getYear(), form.getGrade(),
 				form.getClazz(), form.getFirstName(), form.getLastName(), pageable);
-		String uri = MvcUriComponentsBuilder.relativeTo(builder).withMappingName("SC#getSerchStudentExecution").build();
+		String uri = MvcUriComponentsBuilder.relativeTo(builder).withMappingName("SC#getSearchStudentExecution").build();
 		PageWrapper<UserGradeClass> page = new PageWrapper<>(pageList, 5, uri);
 
 		model.addAttribute("requestList", page.getContent());
@@ -679,7 +673,7 @@ public class SchoolController {
 	@PostMapping("student-template/download")
 	public ModelAndView postStudentTemplateDownload(
 			@Validated @ModelAttribute("createStudentExcelTemplateForm") CreateStudentExcelTemplateForm form,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView();
 		if (bindingResult.hasErrors()) {
 			mav.addObject("grade", FormEnum.Grade.values());
